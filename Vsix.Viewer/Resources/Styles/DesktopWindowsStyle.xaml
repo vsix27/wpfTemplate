@@ -1,0 +1,419 @@
+﻿<ResourceDictionary  xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <FontFamily x:Key="PlannerFont" >../Resources/#Planer</FontFamily>
+
+    <Style x:Key="MainWindowStyle" TargetType="Window">
+        <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+        <Setter Property="AllowsTransparency" Value="False"/>
+        <!--<Setter Property="BorderThickness" Value="20"/>
+        <Setter Property="BorderBrush" Value="LightBlue"/>-->
+        <Setter Property="Background" Value="#EFEEE7"/>
+        <Setter Property="Icon" Value="pack://application:,,,/Vsix.Viewer;component/Resources/Oxygen.ico"/>
+    </Style>
+    
+    <Style x:Key="GridBackgroundStyle" TargetType="Grid">
+        <Setter Property="Background" Value="#FDFDFD"/>
+    </Style>
+    
+    <Style x:Key="TabControlBackgroundStyle" TargetType="TabControl">
+        <Setter Property="Background" Value="#FDFDFD"/>
+    </Style>
+    
+    <Style x:Key="MainWindowStyleBlack" TargetType="Window">
+        <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+        <Setter Property="AllowsTransparency" Value="False"/>
+        <!--<Setter Property="BorderThickness" Value="20"/>  -->
+        <Setter Property="BorderBrush" Value="DimGray"/>
+        <Setter Property="Background" Value="Black"/>
+        <Setter Property="Icon" Value="pack://application:,,,/Vsix.Viewer;component/Resources/Oxygen.ico"/>
+    </Style>
+
+    <Style x:Key="LabelHeading1TextBlockFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property= "Foreground" Value="#6E6259"/>
+        <!--<Setter Property= "FontWeight" Value="600"/>-->
+        <Setter Property= "FontSize" Value="20pt"/>
+        <!--<Setter Property="Padding" Value="0,10,0,10"/>
+                <Setter Property= "Height" Value="Auto"/>-->
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LabelHeading2TextBlockFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property= "Foreground" Value="#6E6259"/>
+        <!--<Setter Property= "FontWeight" Value="600"/>-->
+        <Setter Property= "FontSize" Value="18pt"/>
+        <!--<Setter Property="Padding" Value="0,10,0,10"/>
+                <Setter Property= "Height" Value="Auto"/>-->
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LabelRadioTextBlockFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="Tahoma"/>
+        <Setter Property= "Foreground" Value="#333333"/>
+        <!--<Setter Property= "FontWeight" Value="600"/>-->
+        <Setter Property= "FontSize" Value="10pt"/>
+        <!--<Setter Property="Padding" Value="0,10,0,10"/>
+                <Setter Property= "Height" Value="Auto"/>-->
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LabelRadioHeaderTextBlockFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property= "Foreground" Value="White"/>
+        <!--<Setter Property= "FontWeight" Value="600"/>-->
+        <Setter Property= "FontSize" Value="10pt"/>
+        <!--<Setter Property="Padding" Value="0,10,0,10"/>
+                <Setter Property= "Height" Value="Auto"/>-->
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LabelTextBlockBoldFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="Tahoma"/>
+        <Setter Property= "FontWeight" Value="Bold"/>
+        <Setter Property= "FontSize" Value="10pt"/>
+        <Setter Property= "Foreground" Value="#333333"/>
+        <!--<Setter Property="Padding" Value="0,10,0,10"/>
+            <Setter Property= "Height" Value="Auto"/>-->
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="LabelTextBlockNormalFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="Tahoma"/>
+        <Setter Property= "Foreground" Value="#6E6259"/>
+        <Setter Property= "FontSize" Value="10pt"/>
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="LabelTextBlockSmallFontStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="Tahoma"/>
+        <Setter Property= "Foreground" Value="#6E6259"/>
+        <Setter Property= "FontSize" Value="9pt"/>
+        <Setter Property= "HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#CCCCCC"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="LabelTextBlockErrorFontStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="FontSize" Value="10pt"/>
+        <Setter Property="Foreground" Value="#B71234"/>
+        <Setter Property="Padding" Value="0,3,0,3"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style x:Key="LoginErrorTextBlockStyle" TargetType="TextBlock">
+        <Setter Property= "FontFamily" Value="Tahoma"/>
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+    <Style x:Key="LoginErrorBackgroundStyle" TargetType="StackPanel">
+       <Setter Property="Background" Value="#BABC16"/>
+    </Style>
+    <Style x:Key="LoginTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="Height" Value="23"/>
+        <Setter Property="Width" Value="195"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Background" Value="#B6ADA5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="LoginPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="Height" Value="23"/>
+        <Setter Property="Width" Value="195"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Style.Triggers>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Background" Value="#B6ADA5"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LinkButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock><ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize" Value="10pt"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="Margin" Value="3"/>
+        <!--<Setter Property="Margin" Value="2,2,2,2"/>-->
+        <Setter Property="Foreground"   Value="#007681" />
+        <Style.Triggers>
+            <Trigger   Property="IsMouseOver"   Value="true">
+                <Setter         Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock TextDecorations="Underline">
+                        <ContentPresenter /></TextBlock>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property ="IsEnabled" Value="False">
+                <Setter Property= "Foreground" Value="#98C9CF"/>
+            </Trigger>
+
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="HyperLinkStyle" TargetType="Hyperlink">
+        <Setter Property="FontSize" Value="10pt"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <!--<Setter Property="Margin" Value="2,2,2,2"/>-->
+        <Setter Property="Foreground"   Value="#007681" />
+        <Style.Triggers>
+            <Trigger   Property="IsMouseOver"   Value="true">
+                <Setter Property="TextDecorations" Value="Underline">
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="OkButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#259EA9"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property= "FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property= "FontSize" Value="12pt"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="14" Background="{TemplateBinding Background}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#20787F" /></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter Property="Background" Value="#B1B2B2" /></Trigger>
+        </Style.Triggers>
+
+    </Style>
+    
+    <Style x:Key="CancelButtonStyle" TargetType="Button">
+        <Setter Property= "FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property= "FontSize" Value="12pt"/>
+        <Setter Property="Background" Value="#B1B2B2"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="14" Background="{TemplateBinding Background}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="Gray" /></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter Property="Background" Value="Gray" /></Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="SaveButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource PlannerFont}"/>
+        <Setter Property="Background" Value="#259EA9"/>
+        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border CornerRadius="14" Background="{TemplateBinding Background}" BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True"><Setter Property="Background" Value="#20787F" /></Trigger>
+            <Trigger Property="IsEnabled" Value="False"><Setter Property="Background" Value="#20787F" /></Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HelpTextPopupTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Tahoma"/>
+        <Setter Property="FontSize" Value="12pt"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Background" Value="#000000"/>
+        <Setter Property="Padding" Value="0,3,0,3"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        
+    </Style>
+    
+    <Style x:Key="myErrorTemplate" TargetType="Control">
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Ellipse DockPanel.Dock="Right" 
+                                 ToolTip="{Binding ElementName=myTextbox, 
+                                     Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                                 Width="16" Height="16" 
+                                 Margin="-25,0,0,0"
+                                 StrokeThickness="1" Fill="Red" >
+                            <Ellipse.Stroke>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="#FFFA0404" Offset="0"/>
+                                    <GradientStop Color="#FFC9C7C7" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Stroke>
+                            <Ellipse.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource FlashErrorIcon}"/>
+                                </EventTrigger>
+                            </Ellipse.Triggers>
+                        </Ellipse>
+                        <TextBlock DockPanel.Dock="Right" 
+                                ToolTip="{Binding ElementName=myControl, 
+                                     Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"
+                                Foreground="White"
+                                FontSize="11pt" 
+                                Margin="-15,5,0,0" FontWeight="Bold">!
+                            <TextBlock.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource FlashErrorIcon}"/>
+                                </EventTrigger>
+                            </TextBlock.Triggers>
+                        </TextBlock>
+                        <Border BorderBrush="Red" BorderThickness="1">
+                            <AdornedElementPlaceholder Name="myControl"/>
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Storyboard x:Key="FlashErrorIcon">
+        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                       Storyboard.TargetProperty="(UIElement.Visibility)">
+            <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Hidden}"/>
+            <DiscreteObjectKeyFrame KeyTime="00:00:00.2000000" Value="{x:Static Visibility.Visible}"/>
+            <DiscreteObjectKeyFrame KeyTime="00:00:00.4000000" Value="{x:Static Visibility.Hidden}"/>
+            <DiscreteObjectKeyFrame KeyTime="00:00:00.6000000" Value="{x:Static Visibility.Visible}"/>
+            <DiscreteObjectKeyFrame KeyTime="00:00:00.8000000" Value="{x:Static Visibility.Hidden}"/>
+            <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Visible}"/>
+        </ObjectAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Style x:Key="InputTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource myErrorTemplate}">
+        <Setter Property= "Foreground" Value="#555555"/>
+        <Setter Property= "BorderBrush" Value="#CCCCCC"/>
+        <Style.Triggers>
+            <Trigger Property ="IsFocused" Value="True">
+                <Setter Property= "BorderBrush" Value="#74B9F0"/>
+                <Setter Property= "BorderThickness" Value="2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="HelpLinkButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock VerticalAlignment="Center"  >
+                        <ContentPresenter /></TextBlock>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontFamily" Value="Arial Unicode MS"/>
+        <!--<Setter Property="Margin" Value="2,2,2,2"/>-->
+        <Setter Property="Foreground"   Value="#259EA9" />
+        <Style.Triggers>
+            <Trigger   Property="IsMouseOver"   Value="true">
+                <Setter         Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <TextBlock VerticalAlignment="Center"  TextDecorations="Underline">
+                        <ContentPresenter /></TextBlock>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#B1B2B2" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FDFDFD"/>
+        <Setter Property="BorderBrush" Value="#C8C4BE"/>
+        <Setter Property="BorderThickness" Value=".8"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False" >
+                <Setter Property="Background" Value="#EEEEE6"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+</ResourceDictionary>

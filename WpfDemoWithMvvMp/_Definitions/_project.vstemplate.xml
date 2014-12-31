@@ -1,0 +1,23 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>WPF Application with MVVM, MVP implementation</Name>
+    <Description>Project with MVVM, MVP patterns implementation, contains sample of multithreaded call. Uses .net 4.0 </Description>
+    <DefaultName>WpfDemoWithMvvmp</DefaultName>
+    
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType></ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>    
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>csharp2.png</Icon>
+    
+    <!-- Indicates how many parent folders this item template should appear in -->
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="WpfDemoWithMvvmp.csproj" File="WpfDemoWithMvvmp.csproj" ReplaceParameters="true">      
+    </Project>
+  </TemplateContent>
+</VSTemplate>

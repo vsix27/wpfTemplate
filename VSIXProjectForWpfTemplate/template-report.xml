@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TemplateReport>
+  <ItemTemplates />
+  <ProjectTemplates>
+    <ProjectTemplate Path="..\WpfDemoWithMvvMp\_Definitions\_project.vstemplate.xml" Name="WPF Application with MVVM, MVP implementation" Description="Project with MVVM, MVP patterns implementation, contains sample of multithreaded call. Uses .net 4.0 " ProjectType="CSharp" ProjectSubType="" />
+  </ProjectTemplates>
+  <Snippets />
+</TemplateReport>
