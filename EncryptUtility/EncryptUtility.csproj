@@ -56,60 +56,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.DE.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.ES.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.FR.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.IT.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.JA.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.RU.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.ZH.resx">
-      <DependentUpon>Form1.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.DE.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ES.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.FR.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.IT.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.JA.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.RU.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ZH.resx">
-      <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
