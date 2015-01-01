@@ -11,6 +11,8 @@ namespace Vsix.Viewer.ViewModels
         string Author { get; set; }
         string ProductId { get; set; }
         string ProductIdGuid { get; set; }
+
+        /// <summary> version of the vsix developer package </summary>
         string Version { get; set; }
         string ProjectCsPath { get; set; }
         string Description { get; set; }
@@ -21,5 +23,8 @@ namespace Vsix.Viewer.ViewModels
         string IconPath { get; set; }
         string PreviewImagePath { get; set; }
         string Tags { get; set; }
+
+        /// <summary> version of the xml schema for manifest </summary>
+        string ManifestVersion { get; set; }
     }
 }

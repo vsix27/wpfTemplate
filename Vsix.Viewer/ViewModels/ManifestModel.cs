@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml;
@@ -26,7 +27,10 @@ namespace Vsix.Viewer.ViewModels
             _productId,
             _productIdGuid,
             _gettingStartedGuidePath,
-            _releaseNotesPath;
+            _releaseNotesPath,
+            _selectedManifestVersion;
+
+        private List<string> _manifestVersions = new List<string>();
 
         private ManifestPresenter _presenter;
 
@@ -36,6 +40,7 @@ namespace Vsix.Viewer.ViewModels
         public string TextProductIDLabel { get; set; }
         public string TextRefreshGuidLabel { get; set; }
         public string TextVersionLabel { get; set; }
+        public string TextManifestVersionLabel { get; set; }
         public string TextProjectCsPathLabel { get; set; }
         public string TextBrowseLabel { get; set; }
         public string TextMetadataLabel { get; set; }
@@ -151,6 +156,18 @@ namespace Vsix.Viewer.ViewModels
             set { _moreInfoUrl = value; OnPropertyChanged("MoreInfoUrl"); }
         }
 
+
+        public List<string> ManifestVersions { get; set; }
+        //{
+        //    get { return _manifestVersions; }
+        //    set { _manifestVersions = value; OnPropertyChanged("ManifestVersions"); }
+        //}
+        
+        public string ManifestVersion
+        {
+            get { return _selectedManifestVersion; }
+            set { _selectedManifestVersion = value; OnPropertyChanged("ManifestVersion"); }
+        }
         #endregion
 
         #region commands
@@ -216,6 +233,7 @@ namespace Vsix.Viewer.ViewModels
             TextProductIDLabel = ResourcesHelper.Instance.GetString("TextProductIDLabel");
             TextAuthorLabel = ResourcesHelper.Instance.GetString("TextAuthorLabel");
             TextVersionLabel = ResourcesHelper.Instance.GetString("TextVersionLabel");
+            TextManifestVersionLabel = ResourcesHelper.Instance.GetString("TextManifestVersionLabel");
 
             TextProjectCsPathLabel = ResourcesHelper.Instance.GetString("TextProjectCsPathLabel");
             TextMetadataLabel = ResourcesHelper.Instance.GetString("TextMetadataLabel");
@@ -229,73 +247,187 @@ namespace Vsix.Viewer.ViewModels
             TextVsixReleaseNotesLabel = ResourcesHelper.Instance.GetString("TextVsixReleaseNotesLabel");
             TextVsixGettingStartedGuideLabel = ResourcesHelper.Instance.GetString("TextVsixGettingStartedGuideLabel");
             TextVsixMoreInfoURLLabel = ResourcesHelper.Instance.GetString("TextVsixMoreInfoURLLabel");
+
+            ManifestVersions = new List<string> {"1.0", "2.0"};
+            ManifestVersion = ManifestVersions.Last();
         }
-        
+
+        public string ModelToSourceExtensionManifestV1()
+        {
+            string s = null;
+            try
+            {
+                var doc = new XmlDocument( );
+                doc.LoadXml(GetManifestTemplateV1(false));
+                var ndIdentity = doc.SelectSingleNode("//Identifier");
+                SetNodeValue(ndIdentity, "@Id", ProductId);
+
+                SetNodeValue(doc, "//Name", ProductName);
+                SetNodeValue(doc, "//Version", Version);
+                SetNodeValue(doc, "//Author", Author);
+                SetNodeValue(doc, "//Description", Description);
+
+                SetNodeValue(doc, "//MoreInfoUrl", MoreInfoUrl, true);
+                SetNodeValue(doc, "//License", LicensePath, true);
+                SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
+                SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
+                SetNodeValue(doc, "//Icon", IconPath, true);
+                SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
+                SetNodeValue(doc, "//Tags", Tags, true);
+
+                s = XmlHelper.IndentXml(doc);
+                s = SetManifestTemplateV12Namespaces(s);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError(ex);
+            }
+            return s;
+        }
+
         public string ModelToSourceExtensionManifestV2()
         {
             string s = null;
             try
             {
+                //var doc = XmlHelper.XmlLoadNoNamespaces(GetManifestTemplateV2());
                 var doc = new XmlDocument();
-                doc.LoadXml(GetInitSample());
-                s = doc.OuterXml;
+                doc.LoadXml(GetManifestTemplateV2(false));
+
                 var ndIdentity = doc.SelectSingleNode("//Identity");
                 SetNodeValue(ndIdentity, "@Id", ProductId);
                 SetNodeValue(ndIdentity, "@Version", Version);
                 SetNodeValue(ndIdentity, "@Publisher", Author);
                 SetNodeValue(doc, "//DisplayName", ProductName);
                 SetNodeValue(doc, "//Description", Description);
-                SetNodeValue(doc, "//MoreInfo", MoreInfoUrl);
-                SetNodeValue(doc, "//License", LicensePath);
-                SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath);
-                SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath);
-                SetNodeValue(doc, "//Icon", IconPath);
-                SetNodeValue(doc, "//PreviewImage", PreviewImagePath);
-                SetNodeValue(doc, "//Tags", Tags);
+                SetNodeValue(doc, "//MoreInfo", MoreInfoUrl, true);
+                SetNodeValue(doc, "//License", LicensePath, true);
+                SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
+                SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
+                SetNodeValue(doc, "//Icon", IconPath, true);
+                SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
+                SetNodeValue(doc, "//Tags", Tags, true);
 
-                s = doc.OuterXml;
-
-                doc = null;
+                s = XmlHelper.IndentXml(doc);
+                s = SetManifestTemplateV12Namespaces(s);
+                s = s.Replace("d_Source=", "d:Source=");
             }
-            catch (Exception ex){LogHelper.LogError(ex);}
+            catch (Exception ex)
+            {
+                LogHelper.LogError(ex);
+            }
             return s;
         }
 
-        private void SetNodeValue(XmlNode nd, string xPath, string ndValue)
+        private void SetNodeValue(XmlNode nd, string xPath, string ndValue, bool removeIfEmpty=false)
         {
             if (nd == null) return;
             try
             {
                 var ndSel = nd.SelectSingleNode(xPath);
                 if (ndSel == null) return;
-                ndSel.Value = ndValue;
+
+                if (removeIfEmpty && string.IsNullOrEmpty(ndValue) && ndSel.ParentNode != null)
+                {
+                    ndSel.ParentNode.RemoveChild(ndSel);
+                    return;
+                }
+                ndSel.InnerText = "" + ndValue;
             }
             catch (Exception ex) { LogHelper.LogError(ex); }
         }
 
-        public string GetInitSample()
+        public const string MnfstV1Nms = "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns='http://schemas.microsoft.com/developer/vsx-schema/2010'";
+        public const string MnfstV2Nms = "xmlns='http://schemas.microsoft.com/developer/vsx-schema/2011'  xmlns:d='http://schemas.microsoft.com/developer/vsx-schema-design/2011'";
+
+        public string GetManifestTemplateV1(bool useNameSpace)
         {
-            string s = @"<?xml version='1.0' encoding='utf-8'?>
-<PackageManifest Version='2.0.0' xmlns='http://schemas.microsoft.com/developer/vsx-schema/2011' xmlns:d='http://schemas.microsoft.com/developer/vsx-schema-design/2011'>
+            string s = @"<?xml version='1.0' encoding='utf-8'?>";
+
+            if (useNameSpace)
+                s += @"<Vsix Version='1.0.0' " + MnfstV1Nms + ">";
+            else
+                s += @"<Vsix Version='1.0.0'>";
+
+            s += @"
+<Identifier Id=''>
+    <Name/>
+    <Author/>
+    <Version/>
+    <Description xml:space='preserve'/>
+    <Locale>1033</Locale>
+    <MoreInfoUrl/>
+    <License/>
+    <Icon/>
+    <PreviewImage/>
+    <InstalledByMsi>false</InstalledByMsi>
+    <SupportedProducts>
+      <VisualStudio Version='10.0'><Edition>Ultimate</Edition><Edition>Premium</Edition><Edition>Pro</Edition><Edition>Express_All</Edition></VisualStudio>
+      <VisualStudio Version='11.0'><Edition>Ultimate</Edition><Edition>Premium</Edition><Edition>Pro</Edition><Edition>Express_All</Edition></VisualStudio>
+      <VisualStudio Version='12.0'><Edition>Ultimate</Edition><Edition>Premium</Edition><Edition>Pro</Edition><Edition>Express_All</Edition></VisualStudio>
+      <VisualStudio Version='13.0'><Edition>Ultimate</Edition><Edition>Premium</Edition><Edition>Pro</Edition><Edition>Express_All</Edition></VisualStudio>
+      <VisualStudio Version='14.0'><Edition>Ultimate</Edition><Edition>Premium</Edition><Edition>Pro</Edition><Edition>Express_All</Edition></VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition  MinVersion='2.0' MaxVersion='4.6'  />
+  </Identifier>
+
+  <References>
+    <Reference Id='Microsoft.VisualStudio.MPF' MinVersion='10.0'>
+      <Name>Visual Studio MPF</Name>
+    </Reference>
+  </References>
+
+  <Content>
+    <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
+    <MefComponent>|%CurrentProject%;PkgdefProjectOutputGroup|</MefComponent>
+  </Content>
+</Vsix>";
+            return s;
+        }
+
+        public string SetManifestTemplateV12Namespaces(string s)
+        {
+            if (s.Contains("<PackageManifest>"))
+                return s.Replace("<PackageManifest>", "<PackageManifest Version='2.0.0' " + MnfstV2Nms + ">");
+            if (s.Contains("<PackageManifest "))
+                return s.Replace("<PackageManifest", "<PackageManifest " + MnfstV2Nms);
+            if (s.Contains("<Vsix>"))
+                return s.Replace("<Vsix>", "<Vsix Version='1.0.0' " + MnfstV1Nms + ">");
+            if (s.Contains("<Vsix "))
+                return s.Replace("<Vsix", "<Vsix " + MnfstV1Nms);
+            return s;
+        }
+
+        public string GetManifestTemplateV2(bool useNameSpace = false)
+        {
+            string s = @"<?xml version='1.0' encoding='utf-8'?>";
+            if (useNameSpace)
+                s += @"<PackageManifest Version='2.0.0' " + MnfstV2Nms + ">";
+            else
+                s += @"<PackageManifest Version='2.0.0'>";
+
+            s += @"
   <Metadata>
-    <Identity Id='VSIXProject1..7e1deb4c-03be-4f6c-bf09-e1e909406191' Version='1.0' Language='en-US' Publisher='xx' />
-    <DisplayName>VSIXProject1</DisplayName>
-    <Description>Empty VSIX Project.</Description>
-    <MoreInfo>http://www.rrrr.dgfhsdfg</MoreInfo>
-    <License>New Text Document.txt</License>
-    <GettingStartedGuide>New Text Document.txt</GettingStartedGuide>
-    <ReleaseNotes>New Text Document.txt</ReleaseNotes>
-    <Icon>csharp2.png</Icon>
-    <PreviewImage>csharp2.png</PreviewImage>
-    <Tags>vsix, template</Tags>
+    <Identity Id='' Version='' Language='en-US' Publisher='' />
+    <DisplayName/>
+    <Description/>
+    <MoreInfo/>
+    <License/>
+    <GettingStartedGuide/>
+    <ReleaseNotes/>
+    <Icon/>
+    <PreviewImage/>
+    <Tags/>
   </Metadata>
   <Installation>
-    <InstallationTarget Id='Microsoft.VisualStudio.Pro' Version='[12.0]' />
+    <InstallationTarget Id='Microsoft.VisualStudio.Pro' Version='[12.0,)' />
   </Installation>
   <Dependencies>
-    <Dependency Id='Microsoft.Framework.NDP' DisplayName='Microsoft .NET Framework' d:Source='Manual' Version='[4.5,)' />
+    <Dependency Id='Microsoft.Framework.NDP' DisplayName='Microsoft .NET Framework' d:Source='Manual' Version='[3.5,)' />
   </Dependencies>
 </PackageManifest>";
+            if (!useNameSpace) 
+                s = s.Replace("d:Source='Manual'", "d_Source='Manual'");
             return s;
         }
 
@@ -303,29 +435,36 @@ namespace Vsix.Viewer.ViewModels
         /// <returns></returns>
         public override string ToString()
         {
-            return ToStrings().Aggregate(string.Empty, (current, c) => current + (c + Environment.NewLine));
+            // return ToStrings().Aggregate(string.Empty, (current, c) => current + (c + Environment.NewLine));
+            return ToStringPairs().Aggregate(string.Empty, (current, c) => current + (c.Key + " " + c.Value + Environment.NewLine));
         }
 
         /// <summary> list of all properties with values </summary>
         /// <returns></returns>
         public List<string> ToStrings()
         {
-            return new List<string>
+            return ToStringPairs().Select(kvp => kvp.Key + " " + kvp.Value).ToList();
+        }
+
+        public Dictionary<string, string> ToStringPairs()
+        {
+            return new Dictionary<string, string>
             {
-                "ProjectCsPath " + ProjectCsPath,
-                "ProjectPath " + ProjectPath,
-                "ProductName " + ProductName,
-                "Author " + Author,
-                "ProductId " + ProductId,
-                "Version " + Version,
-                "Description " + Description,
-                "LicensePath " + LicensePath,
-                "IconPath " + IconPath,
-                "PreviewImagePath " + PreviewImagePath,
-                "Tags " + Tags,
-                "ReleaseNotesPath " + ReleaseNotesPath,
-                "GettingStartedGuidePath " + GettingStartedGuidePath,
-                "MoreInfoUrl " + MoreInfoUrl
+                {"ProjectCsPath", ProjectCsPath},
+                {"ProjectPath", ProjectPath},
+                {"ProductName", ProductName},
+                {"Author", Author},
+                {"ProductId", ProductId},
+                {"Version", Version},
+                {"Description", Description},
+                {"LicensePath", LicensePath},
+                {"IconPath", IconPath},
+                {"PreviewImagePath", PreviewImagePath},
+                {"Tags", Tags},
+                {"ReleaseNotesPath", ReleaseNotesPath},
+                {"GettingStartedGuidePath", GettingStartedGuidePath},
+                {"MoreInfoUrl", MoreInfoUrl},
+                {"ManifestVersion", ManifestVersion}
             };
         }
     }

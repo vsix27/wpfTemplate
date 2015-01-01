@@ -269,4 +269,10 @@
   <data name="menuOptions" xml:space="preserve">
     <value>Options</value>
   </data>
+  <data name="menuErrorReport" xml:space="preserve">
+    <value>Send Error Report/comments</value>
+  </data>
+  <data name="TextManifestVersionLabel" xml:space="preserve">
+    <value>Manifest Version</value>
+  </data>
 </root>

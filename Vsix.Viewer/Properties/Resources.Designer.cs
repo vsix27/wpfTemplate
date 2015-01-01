@@ -160,6 +160,15 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send Error Report/comments.
+        /// </summary>
+        internal static string menuErrorReport {
+            get {
+                return ResourceManager.GetString("menuErrorReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         internal static string menuExit {
@@ -205,7 +214,7 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set Language .
+        ///   Looks up a localized string similar to Set Language.
         /// </summary>
         internal static string menuSetLanguage {
             get {
@@ -273,6 +282,15 @@ namespace Vsix.Viewer.Properties {
         internal static string TextBrowseLabel {
             get {
                 return ResourceManager.GetString("TextBrowseLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manifest Version.
+        /// </summary>
+        internal static string TextManifestVersionLabel {
+            get {
+                return ResourceManager.GetString("TextManifestVersionLabel", resourceCulture);
             }
         }
         

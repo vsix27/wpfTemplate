@@ -43,8 +43,13 @@ namespace Vsix.Viewer.Views
 
         private void CommandCheckManifest(object sender, RoutedEventArgs e)
         {
-            DebugHelper.DebugOpenHtml(_viewModel.ToStrings(), string.Empty, true);
-            //Console.WriteLine(_viewModel.ToString());
+            string xmlManifest = "<h3>ModelToSourceExtensionManifest v" + _viewModel.ManifestVersion + "</h3>";
+            xmlManifest += "<textarea cols='120' rows='20' wrap='off'>";
+            xmlManifest += _viewModel.ManifestVersion.StartsWith("1")
+                ? _viewModel.ModelToSourceExtensionManifestV1()
+                : _viewModel.ModelToSourceExtensionManifestV2();
+            xmlManifest += "</textarea>";
+            DebugHelper.OpenTextAsFile(_viewModel.ToStringPairs().ToHtmlTable() + xmlManifest, ".html");
         }
 
         private void ManifestSave(object sender, RoutedEventArgs e)

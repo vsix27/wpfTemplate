@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Vsix.Common.Helpers
 {
     public class XmlHelper
     {
         /// <summary>
-        /// load xml ignoring all namespaces via doc.Load(new XmlTextReader(filePath) { Namespaces = false });
+        /// load xml from file ignoring all namespaces via doc.Load(new XmlTextReader(filePath) { Namespaces = false });
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -25,6 +26,28 @@ namespace Vsix.Common.Helpers
                     doc.Load(new XmlTextReader(filePath) {Namespaces = false});
                     return doc;
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// load xml from string ignoring all namespaces via doc.Load(new XmlTextReader(filePath) { Namespaces = false });
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        public static XmlDocument XmlLoadNoNamespaces(string xml)
+        {
+            try
+            {
+                var f = XElement.Parse(xml);
+                var t = f.Descendants().Select(o => o.Name = o.Name.LocalName).ToArray();
+                var doc = new XmlDocument();
+                doc.LoadXml(f.ToString());
+                return doc;
             }
             catch (Exception ex)
             {
@@ -105,5 +128,31 @@ namespace Vsix.Common.Helpers
             return null;
         }
 
+        public static string IndentXml(XmlDocument doc)
+        {
+            var stringWriter = new StringWriter(new StringBuilder());
+            var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
+            doc.Save(xmlTextWriter);
+            return stringWriter.ToString();
+        }
+
+        public static string IndentXml(string s)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(s);
+ 
+            var stringWriter = new StringWriter(new StringBuilder());
+            var xmlTextWriter = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented };
+            doc.Save(xmlTextWriter);
+            return doc.OuterXml;
+        }
+
+        public static void SaveIndentedXmlFile(string s, string path)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(s);
+            var writer = new XmlTextWriter(path, null) {Formatting = Formatting.Indented};
+            doc.Save(writer);
+        }
     }
 }

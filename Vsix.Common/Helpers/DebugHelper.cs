@@ -7,7 +7,8 @@ using System.Linq;
 namespace Vsix.Common.Helpers
 {
    public static class DebugHelper
-    {
+   {
+       private static string _nl = Environment.NewLine;
        public static void DebugOpenText(this List<string> list, string attrStart = "", bool numbered = false)
        {
            OpenText(list, ".txt", attrStart, numbered);
@@ -20,7 +21,7 @@ namespace Vsix.Common.Helpers
                attrStart = attrStarts.Aggregate(attrStart, (current, s) => current + (s + ";"));
            OpenText(list, ".txt", attrStart, numbered);
        }
-
+       
        public static void DebugOpenHtml(this List<string> list, string attrStart = "", bool numbered = false)
        {
            OpenText(list, ".html", attrStart, numbered);
@@ -32,6 +33,15 @@ namespace Vsix.Common.Helpers
            if (attrStarts != null && attrStarts.Length > 0)
                attrStart = attrStarts.Aggregate(attrStart, (current, s) => current + (s + ";"));
            OpenText(list, ".html", attrStart, numbered);
+       }
+
+       public static void OpenTextAsFile(string s, string ext)
+       {
+           var tmp = Path.GetTempFileName();
+           File.Delete(tmp);
+           tmp += ext;
+           File.WriteAllText(tmp, s);
+           Process.Start(tmp);
        }
 
        public static void OpenText(List<string> list, string ext, string attrStart, bool numbered = false)
@@ -87,5 +97,17 @@ namespace Vsix.Common.Helpers
            File.WriteAllLines(tmp, list);
            Process.Start(tmp);
        }
+
+       public static string ToHtmlTable(this Dictionary<string, string> dictionary)
+       {
+           // return ToStrings().Aggregate(string.Empty, (current, c) => current + (c + Environment.NewLine));
+           int k = 0;
+           string s = "<table border='1' cellpadding='2' cellspacing='0'>";
+           s += dictionary.Aggregate(string.Empty, (current, c) =>
+               current + string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", k++, c.Key, c.Value) + _nl);
+           s += "</table>";
+           return s;
+       }
+
     }
 }

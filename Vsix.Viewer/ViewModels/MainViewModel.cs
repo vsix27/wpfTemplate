@@ -22,6 +22,7 @@ namespace Vsix.Viewer.ViewModels
         internal void InitResources()
         {
             TextAbout = ResourcesHelper.Instance.GetString("menuAbout");
+            TextErrorReportVsix = ResourcesHelper.Instance.GetString("menuErrorReport");
             TextOptions = ResourcesHelper.Instance.GetString("menuOptions");
             TextSaveVsix = ResourcesHelper.Instance.GetString("menuSaveVsix");
             TextExit = ResourcesHelper.Instance.GetString("menuExit");
@@ -74,14 +75,14 @@ namespace Vsix.Viewer.ViewModels
 
         public string TextOptionsInstalledVsix
         {
-            get { return _TextOptionsInstalledVsix; }
-            set { _TextOptionsInstalledVsix = value; OnPropertyChanged("TextOptionsInstalledVsix"); }
+            get { return _textOptionsInstalledVsix; }
+            set { _textOptionsInstalledVsix = value; OnPropertyChanged("TextOptionsInstalledVsix"); }
         }
 
         public string TextOptionsRemoveVsix
         {
-            get { return _TextOptionsRemoveVsix; }
-            set { _TextOptionsRemoveVsix = value; OnPropertyChanged("TextOptionsRemoveVsix"); }
+            get { return _textOptionsRemoveVsix; }
+            set { _textOptionsRemoveVsix = value; OnPropertyChanged("TextOptionsRemoveVsix"); }
         }
 
         public string TextAboutVsix
@@ -116,6 +117,12 @@ namespace Vsix.Viewer.ViewModels
             set { _textAbout = value; OnPropertyChanged("TextAbout"); }
         }
 
+        public string TextErrorReportVsix
+        {
+            get { return _textErrorReportVsix; }
+            set { _textErrorReportVsix = value; OnPropertyChanged("TextErrorReportVsix"); }
+        }
+       
         public string TextExit
         {
             get { return _textExit; }
@@ -137,9 +144,9 @@ namespace Vsix.Viewer.ViewModels
         public bool ShowErrorText { get; set; }
         
         private string _error;
-        private string _txtOutputText, _textSaveVsix, _TextOptionsInstalledVsix, _TextOptionsRemoveVsix;
+        private string _txtOutputText, _textSaveVsix, _textOptionsInstalledVsix, _textOptionsRemoveVsix;
         private string _textNewVsix, _textAboutVsix, _textExit, _textAbout, _textOpenVsix, _textViewLog;
-        private string _textViewStyles, _textViewBindings, _txtFolderPath;
+        private string _textViewStyles, _textViewBindings, _txtFolderPath, _textErrorReportVsix;
 
         public string TextViewStyles
         {
@@ -216,8 +223,12 @@ namespace Vsix.Viewer.ViewModels
         // short process without thread
         public ICommand CommandSaveVsix{ get { return new RelayCommand(SaveVsix); } }
         // call presenter 
-        public void SaveVsix(){OnPropertyChanged("SaveVsix");}
+        public void SaveVsix(){ OnPropertyChanged("SaveVsix"); }
 
+        public ICommand CommandErrorReport{ get { return new RelayCommand(ErrorReport); } }
+        public void ErrorReport(){ OnPropertyChanged("ErrorReport"); }
+
+        
         #endregion
     }
 }

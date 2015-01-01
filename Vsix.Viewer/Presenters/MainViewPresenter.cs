@@ -68,6 +68,10 @@ namespace Vsix.Viewer.Presenters
                 //case "NewVsix":
                 //    NewVsix();
                 //    break;
+                   
+                case "ErrorReport":
+                    //ErrorReport();
+                    break;
 
                 case "OpenVsix":
                     OpenVsix();

@@ -71,6 +71,7 @@
                 -->
                 <MenuItem Header="{Binding TextAbout, FallbackValue='about...'}" ToolTip="about..."   >
                     <MenuItem Header="{Binding TextAboutVsix, FallbackValue='about vsix...'}" Command="{Binding CommandAbout}" />
+                    <MenuItem Header="{Binding TextErrorReportVsix, FallbackValue='send errors/comments...'}" Command="{Binding CommandErrorReport}" />
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="{Binding TextExit, FallbackValue='exit...'}" Click="ExitApplication" ToolTip="exit..." />
