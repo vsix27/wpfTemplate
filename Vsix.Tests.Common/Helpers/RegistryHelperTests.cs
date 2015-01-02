@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Vsix.Common.Helpers;
+using Vsix.Viewer.Helpers;
 
 
 namespace Vsix.CommonTests.Helpers
@@ -92,11 +93,21 @@ namespace Vsix.CommonTests.Helpers
             Assert.IsTrue(true);
         }
 
+        [Test()]
+        public void GetVisualStudioPackagesPath()
+        {
+            var sKeys = RegistryPackage.GetRegistryPackagesPath();
+            sKeys.DebugConsole();
+            Assert.IsTrue(sKeys.Count > 0);
+        }
+
         [Test()]public void GetVisualStudioApps()
         {
             var sKeys = RegistryHelper.GetRegistryPath(RegistryHelper.HKCU_VS).GetSubKeyNames().ToList();
-            //Debug.WriteLine("---- GetSubKeyNames ------");
-            //sKeys.DebugConsole();
+
+            Debug.WriteLine("---- GetSubKeyNames ------ start");
+            sKeys.DebugConsole();
+            Debug.WriteLine("---- GetSubKeyNames ------ end ");
 
             var sKeys12 = sKeys.Where(c => c.StartsWith("12.0")).ToList();
             Func<string, string> addPackage = (c) => RegistryHelper.HKCU_VS + "\\" + c + "\\Packages";
@@ -104,9 +115,10 @@ namespace Vsix.CommonTests.Helpers
             //               where c.StartsWith("12.0") && RegistryHelper.GetRegistryPath(addPackage(c)) != null
             //               select addPackage(c)).ToList();
 
+            // packages are only if string has Exp_Config :  "12.0Exp_Config"
             foreach (string c in sKeys12)
             {
-                Debug.WriteLine(" ***********    {0} *********** ", c);
+                Debug.WriteLine("***********  " + c + "  *********** start ");
 
                 string sPackage = addPackage(c);
                 if (RegistryHelper.GetRegistryPath(sPackage) == null) continue;
@@ -115,31 +127,17 @@ namespace Vsix.CommonTests.Helpers
                 foreach (var  subKey in  RegistryHelper.GetRegistryPath(sPackage).GetSubKeyNames())
                 {
                     var rk = RegistryHelper.GetRegistryPath(sPackage + "\\" + subKey);
-                    string sProductName = "" + rk.GetValue("ProductName");
-                    string sProductVersion = "" + rk.GetValue("ProductVersion");
-                    string sMinEdition = "" + rk.GetValue("MinEdition");
+                    var rkp = new RegistryPackage(rk);
 
-                    if (string.IsNullOrEmpty(sProductName) || string.IsNullOrEmpty(sProductVersion) || string.IsNullOrEmpty(sMinEdition)) continue;
+                    if (string.IsNullOrEmpty(rkp.ProductName) || string.IsNullOrEmpty(rkp.ProductVersion) ||
+                        string.IsNullOrEmpty(rkp.MinEdition)) continue;
 
-                    string sDefault = "" + rk.GetValue(null);
-                    string sClass = "" + rk.GetValue("Class");
-                    Debug.WriteLine("{0,3}\t{1,-20} {2} ", k++, "ProductName", sProductName);
-                    Debug.WriteLine("\t{0,-20} {1} ", "ProductVersion", sProductVersion);
-                    Debug.WriteLine("\t{0,-20} {1} ", "MinEdition", sMinEdition);
+                    Debug.WriteLine("{0,3}\t{1} ", k++, rkp.ToString());
                 }
+
+                Debug.WriteLine("***********  " + c + "  *********** end ");
             }
-
-            Debug.WriteLine("---- GetSubKeyNames 12.0 ------ end ");
-            //sKeys12.DebugConsole();
-
-            // empty
-            //var sVals = RegistryHelper.GetRegistryPath(RegistryHelper.HKCU_VS).GetValueNames();
-            //Debug.WriteLine("---- GetValueNames ------");
-            //sVals.DebugConsole();
-
-
-
-
+    
             Assert.IsTrue(true);
         }
        

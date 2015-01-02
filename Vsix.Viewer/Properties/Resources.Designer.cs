@@ -277,6 +277,15 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Studio Version.
+        /// </summary>
+        internal static string TestVisualStudioVersionLabel {
+            get {
+                return ResourceManager.GetString("TestVisualStudioVersionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text file.
         /// </summary>
         internal static string text_file {

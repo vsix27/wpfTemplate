@@ -64,6 +64,10 @@
       <Project>{4DCB05C5-0BE9-45EF-AD9E-1A51E40CB2A9}</Project>
       <Name>Vsix.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Vsix.Viewer\Vsix.Viewer.csproj">
+      <Project>{8fc8e5ce-e72d-40d0-9248-d389730510e1}</Project>
+      <Name>Vsix.Viewer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

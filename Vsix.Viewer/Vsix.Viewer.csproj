@@ -99,11 +99,19 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ApplicationDefinition>
+    <Compile Include="Helpers\IRegistryPackage.cs" />
+    <Compile Include="Helpers\RegistryPackage.cs" />
     <Compile Include="Helpers\ResourcesHelper.cs" />
     <Compile Include="Presenters\ManifestPresenter.cs" />
+    <Compile Include="Presenters\RegistryPackagePresenter.cs" />
     <Compile Include="ViewModels\IManifestModel.cs.cs" />
+    <Compile Include="ViewModels\IRegistryPackageModel.cs" />
+    <Compile Include="ViewModels\RegistryPackageModel.cs" />
     <Compile Include="Views\ManifestWindow.xaml.cs">
       <DependentUpon>ManifestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ucRegistryPackages.xaml.cs">
+      <DependentUpon>ucRegistryPackages.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Styles\Brush.CheckBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -179,6 +187,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\ManifestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ucRegistryPackages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

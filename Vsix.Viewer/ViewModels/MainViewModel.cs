@@ -10,13 +10,13 @@ namespace Vsix.Viewer.ViewModels
     public class MainViewModel : ObservableObject, IMainViewModel
     {
         private MainViewPresenter _presenter;
-    
+
         public MainViewModel()
         {
-           LogHelper.LogEnter();
+            //LogHelper.LogEnter();
             _presenter = new MainViewPresenter(this);
             InitResources();
-            LogHelper.LogExit();
+            //LogHelper.LogExit();
         }
 
         internal void InitResources()

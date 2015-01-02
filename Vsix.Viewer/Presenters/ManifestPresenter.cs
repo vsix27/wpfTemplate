@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Vsix.Common.Helpers;
-using Vsix.Viewer;
+using Vsix.Viewer.Helpers;
 using Vsix.Viewer.ViewModels;
-using ResourcesHelper = Vsix.Viewer.Helpers.ResourcesHelper;
 
 namespace Vsix.Viewer.Presenters
 {
@@ -199,7 +197,7 @@ namespace Vsix.Viewer.Presenters
             frm.ShowDialog();
         }
         
-        #region file samler [Content_Types].xml, extension.vsixmanifest
+        #region file sampler [Content_Types].xml, extension.vsixmanifest
         /* file 
          * [Content_Types].xml - static
           

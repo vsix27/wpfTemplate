@@ -283,4 +283,7 @@
     <value>Select Release Notes file</value>
     <comment>file dialog in new manifest</comment>
   </data>
+  <data name="TestVisualStudioVersionLabel" xml:space="preserve">
+    <value>Visual Studio Version</value>
+  </data>
 </root>
