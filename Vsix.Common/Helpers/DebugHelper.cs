@@ -9,6 +9,47 @@ namespace Vsix.Common.Helpers
    public static class DebugHelper
    {
        private static string _nl = Environment.NewLine;
+
+       /// <summary>
+       /// pring in output/debug window all values from list
+       /// </summary>
+       /// <param name="ss"></param>
+       public static void DebugConsole(this string[] ss)
+       {
+           if (ss == null)
+           {
+               Debug.WriteLine("=== array is null ===");
+               return;
+           }
+           if (ss.Length==0 )
+           {
+               Debug.WriteLine("=== array is not null, but empty ===");
+               return;
+           }
+           int k = 0;
+           foreach (string s in ss) Debug.WriteLine("{0,3} {1}", k++, s);
+       }
+
+       /// <summary>
+       /// pring in output/debug window all values from list
+       /// </summary>
+       /// <param name="ss"></param>
+       public static void DebugConsole(this List<string> ss)
+       {
+           if (ss == null)
+           {
+               Debug.WriteLine("=== List is null ===");
+               return;
+           }
+           if (ss.Count == 0)
+           {
+               Debug.WriteLine("=== List is not null, but empty ===");
+               return;
+           }
+           int k = 0;
+           foreach (string s in ss) Debug.WriteLine("{0,3} {1}", k++, s);
+       }
+
        public static void DebugOpenText(this List<string> list, string attrStart = "", bool numbered = false)
        {
            OpenText(list, ".txt", attrStart, numbered);
@@ -44,7 +85,7 @@ namespace Vsix.Common.Helpers
            Process.Start(tmp);
        }
 
-       public static void OpenText(List<string> list, string ext, string attrStart, bool numbered = false)
+       public static string OpenText(List<string> list, string ext, string attrStart, bool numbered = false)
        {
            // list.Sort();
            var tmp = Path.GetTempFileName();
@@ -96,6 +137,7 @@ namespace Vsix.Common.Helpers
 
            File.WriteAllLines(tmp, list);
            Process.Start(tmp);
+           return tmp;
        }
 
        public static string ToHtmlTable(this Dictionary<string, string> dictionary)

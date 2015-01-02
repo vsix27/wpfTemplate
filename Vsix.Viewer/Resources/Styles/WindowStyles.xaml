@@ -27,7 +27,7 @@
         <Setter Property="Background" Value="White"/>
         <Setter Property="Icon" Value="pack://application:,,,/Vsix.Viewer;component/Resources/Oxygen.ico"/>
     </Style>
-    <Style x:Key="DeltaWindowStyleBlack" TargetType="Window">
+    <Style x:Key="WindowStyleBlack" TargetType="Window">
         <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
         <Setter Property="AllowsTransparency" Value="False"/>
         <!--<Setter Property="BorderThickness" Value="20"/>-->

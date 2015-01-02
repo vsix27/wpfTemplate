@@ -415,13 +415,13 @@
         <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>-->
 
-    <Style x:Key="DeltaWindowStyleBlack" TargetType="Window">
+    <Style x:Key="WindowStyleBlack" TargetType="Window">
         <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
         <Setter Property="AllowsTransparency" Value="False"/>
         <!--<Setter Property="BorderThickness" Value="20"/>-->
         <Setter Property="BorderBrush" Value="DimGray"/>
         <Setter Property="Background" Value="Black"/>
-        <Setter Property="Icon" Value="/Intralinks.UI.Base;component/Images/il_logo1.ico"/>
+        <Setter Property="Icon" Value="/Vsix.Viewer;component/Resources/Oxygen.ico"/>
         <Setter Property="Border.Background">
             <Setter.Value>
                 <LinearGradientBrush EndPoint="0.4,1" StartPoint="0.4,0">

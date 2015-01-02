@@ -26,9 +26,7 @@ namespace Vsix.Viewer.Infrastructure
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            //DeltaLog.LogEnter(propertyName);  
             OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-            //DeltaLog.LogExit();
         }
 
         protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpresssion)

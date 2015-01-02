@@ -18,8 +18,19 @@ namespace Vsix.Viewer.Presenters
         private readonly IManifestModel _viewModel;
         //private readonly BackgroundWorker _bgWorker;
         public string _nl = Environment.NewLine;
-        private string _webFile, _textFile, _wordFile, _iconFile, _csprojects,
-            _csprojectsTitle, _licenseTitle, _iconTitle, _previewImageTitle, _gettingStartedTitle;
+
+        private string _allFiles, 
+            _webFile,
+            _textFile,
+            _wordFile,
+            _iconFile,
+            _csprojects,
+            _selectReleaseNotesTitle,
+            _csprojectsTitle,
+            _licenseTitle,
+            _iconTitle,
+            _previewImageTitle,
+            _gettingStartedTitle;
 
         public ManifestPresenter(IManifestModel viewModel)
         {
@@ -27,6 +38,11 @@ namespace Vsix.Viewer.Presenters
             _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             #region init strings/labels
+
+
+            if (string.IsNullOrEmpty(_allFiles)) _allFiles = ResourcesHelper.Instance.GetString("all_files");
+            if (string.IsNullOrEmpty(_allFiles)) _allFiles = "All.files";
+
             if (string.IsNullOrEmpty(_webFile)) _webFile = ResourcesHelper.Instance.GetString("web_file");
             if (string.IsNullOrEmpty(_webFile)) _webFile = "web.file";
 
@@ -57,7 +73,12 @@ namespace Vsix.Viewer.Presenters
 
             if (string.IsNullOrEmpty(_gettingStartedTitle)) _gettingStartedTitle = ResourcesHelper.Instance.GetString("gettingStarted_title");
             if (string.IsNullOrEmpty(_gettingStartedTitle)) _gettingStartedTitle = "Select.Getting.Started.file";
+
+            if (string.IsNullOrEmpty(_selectReleaseNotesTitle)) _selectReleaseNotesTitle = ResourcesHelper.Instance.GetString("releaseNotes_title");
+            if (string.IsNullOrEmpty(_selectReleaseNotesTitle)) _selectReleaseNotesTitle = "Select.Release.Notes.file";
+     
             #endregion
+
             //// initialize bgWorker
             //_bgWorker = new BackgroundWorker();
             //_bgWorker.DoWork += BgWorkerDoWork;
@@ -73,54 +94,47 @@ namespace Vsix.Viewer.Presenters
         //{
         //    _viewModel.Author += "processed all files " + _nl;
         //}
-        
+
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            string s = string.Empty;
-            List<string> lst;
+
             switch (e.PropertyName)
             {
-                case "RefreshGuid"	:
-                   _viewModel.ProductIdGuid = Guid.NewGuid().ToString();
-                   break;
-                    
+                case "RefreshGuid":
+                    _viewModel.ProductIdGuid = Guid.NewGuid().ToString();
+                    break;
+
                 case "BrowseIcon":
-                    s = GetIcon();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.IconPath = s;
+                    _viewModel.IconPath = GetIcon();
                     break;
-                    
+
                 case "BrowsePreviewImage":
-                    s = GetPreviewImage();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.PreviewImagePath = s;
+                    _viewModel.PreviewImagePath = GetPreviewImage();
                     break;
-                    
+
                 case "BrowseReleaseNotes":
-                    s = GetReleaseNotes();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.ReleaseNotesPath = s;
+                    _viewModel.ReleaseNotesPath = GetReleaseNotes();
                     break;
-                    
+
                 case "BrowseGettingStartedGuide":
-                    s = GetGettingStartedGuide();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.GettingStartedGuidePath = s;
+                    _viewModel.GettingStartedGuidePath = GetGettingStartedGuide();
                     break;
-                    
+
                 case "BrowseLicense":
-                    s = GetLicense();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.LicensePath = s;
+                    _viewModel.LicensePath = GetLicense();
                     break;
 
                 case "GetProjectCsPath":
-                    s = GetProjectCsPath();
-                    if (!string.IsNullOrEmpty(s)) _viewModel.ProjectCsPath = s;
+                    _viewModel.ProjectCsPath = GetProjectCsPath();
                     break;
-                    
-                //// put verfication logic if needed
-                //_viewModel.ErrorText = (!Directory.Exists(_viewModel.FolderPath))
-                //    ? ("invalid directory, please change: " + _viewModel.FolderPath)
-                    
-                //case "ProcessFiles":
-                //    _bgWorker.RunWorkerAsync();
-                //    break;
+
+                    //// put verfication logic if needed
+                    //_viewModel.ErrorText = (!Directory.Exists(_viewModel.FolderPath))
+                    //    ? ("invalid directory, please change: " + _viewModel.FolderPath)
+
+                    //case "ProcessFiles":
+                    //    _bgWorker.RunWorkerAsync();
+                    //    break;
 
                 default:
                     break;
@@ -142,36 +156,35 @@ namespace Vsix.Viewer.Presenters
         public string GetReleaseNotes()
         {
             var lst = new List<string>
-                    {
-                        _webFile + "|*.html",
-                        _webFile + "|*.htm",
-                        _textFile + "|*.txt",
-                        _wordFile + "|*.rtf",
-                    };
-            return ExplorerHelper.SelectFileInExplorer("Select Release Notes file", lst);
+            {
+                _allFiles + "|*.html;*.htm;*.txt;*.rtf",
+                _webFile + "|*.html;*.htm",
+                _textFile + "|*.txt",
+                _wordFile + "|*.rtf",
+            };
+            return ExplorerHelper.SelectFileInExplorer(_selectReleaseNotesTitle, lst);
         }
 
         public string GetGettingStartedGuide()
         {
-           var lst = new List<string>
-                    {
-                        _webFile + "|*.html",
-                        _webFile + "|*.htm",
-                        _textFile + "|*.txt",
-                        _wordFile + "|*.rtf",
-                        _wordFile + "|*.doc",
-                        _wordFile + "|*.docx"
-                    };
+            var lst = new List<string>
+            {
+                _allFiles + "|*.html;*.htm;*.txt;*.rtf;*.doc;*.docx",
+                _webFile + "|*.html;*.htm",
+                _textFile + "|*.txt",
+                _wordFile + "|*.rtf;*.doc;*.docx"
+            };
            return ExplorerHelper.SelectFileInExplorer(_gettingStartedTitle, lst);
         }
         
         public string GetLicense()
         {
-           var lst = new List<string>
-                    {
-                        _wordFile + "|*.rtf",
-                        _textFile + "|*.txt"
-                    };
+            var lst = new List<string>
+            {
+                _allFiles + "|*.txt;*.rtf",
+                _wordFile + "|*.rtf",
+                _textFile + "|*.txt"
+            };
             return ExplorerHelper.SelectFileInExplorer(_licenseTitle, lst);
         }
 
@@ -185,8 +198,7 @@ namespace Vsix.Viewer.Presenters
             var frm = new frmVsixManifest();
             frm.ShowDialog();
         }
-
-
+        
         #region file samler [Content_Types].xml, extension.vsixmanifest
         /* file 
          * [Content_Types].xml - static
@@ -195,28 +207,7 @@ namespace Vsix.Viewer.Presenters
             <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
 	            <Default Extension="zip" ContentType="application/zip" /><Default Extension="dll" ContentType="application/octet-stream" />
 	            <Default Extension="vsixmanifest" ContentType="text/xml" />
-            </Types>
-                           
-         * extension.vsixmanifest (Version="2.0.0"     )
-          
-        <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
-          <Metadata>
-            <Identity Id="VSIXProjectForWpfTemplate..b553d51a-30d4-433b-863d-7f67a93c460a" Version="1.0" Language="en-US" Publisher="Alex Bondarev" />
-            <DisplayName>VSIXProjectForWpfTemplate</DisplayName>
-            <Description>Empty VSIX Project.</Description>
-          </Metadata>
-          <Installation>
-            <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0]" />
-          </Installation>
-          <Dependencies>
-            <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.5,)" />
-          </Dependencies>
-          <Assets>
-            <Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="Output\ItemTemplates" />
-            <Asset Type="Microsoft.VisualStudio.ProjectTemplate" Path="Output\ProjectTemplates" />
-          </Assets>
-        </PackageManifest>
-         
+            </Types>    
          */
 
         #endregion
@@ -235,6 +226,7 @@ namespace Vsix.Viewer.Presenters
             if (list.Count > 0)
                 list.DebugOpenText(attrStart, true);
         }
+
         private void ViewXamlAttributesStartingWith(string[] attrStarts)
         {
             var list = GetXamlAttributesStartingWith(attrStarts);
@@ -244,6 +236,7 @@ namespace Vsix.Viewer.Presenters
                 //list.DebugOpenHtml(attrStarts, true);
             }
         }
+
         private List<string> GetXamlAttributesStartingWith(IEnumerable<string> attrStarts)
         {
             var listM = new List<string>();
@@ -255,6 +248,7 @@ namespace Vsix.Viewer.Presenters
             }
             return listM;
         }
+    
         private List<string> GetXamlAttributesStartingWith(string attrStart)
         {
             var list = new List<string>();

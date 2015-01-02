@@ -10,8 +10,6 @@ using System.Xml.Linq;
 using Ionic.Utils.Zip;
 using Vsix.Common.Helpers;
 using Vsix.Viewer.ViewModels;
-using Vsix.Viewer;
-using Vsix.Viewer.ViewModels;
 
 namespace Vsix.Viewer.Presenters
 {

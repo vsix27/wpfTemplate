@@ -154,5 +154,24 @@ namespace Vsix.Common.Helpers
             var writer = new XmlTextWriter(path, null) {Formatting = Formatting.Indented};
             doc.Save(writer);
         }
+
+        public static void SetNodeValue(XmlNode nd, string xPath, string ndValue, bool removeIfEmpty = false)
+        {
+            if (nd == null) return;
+            try
+            {
+                var ndSel = nd.SelectSingleNode(xPath);
+                if (ndSel == null) return;
+
+                if (removeIfEmpty && string.IsNullOrEmpty(ndValue) && ndSel.ParentNode != null)
+                {
+                    ndSel.ParentNode.RemoveChild(ndSel);
+                    return;
+                }
+                ndSel.InnerText = "" + ndValue;
+            }
+            catch (Exception ex) { LogHelper.LogError(ex); }
+        }
+
     }
 }

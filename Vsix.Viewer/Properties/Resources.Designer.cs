@@ -61,6 +61,15 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        internal static string all_files {
+            get {
+                return ResourceManager.GetString("all_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to c# project.
         /// </summary>
         internal static string cs_project {
@@ -259,7 +268,16 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to text file.
+        ///   Looks up a localized string similar to Select Release Notes file.
+        /// </summary>
+        internal static string releaseNotes_title {
+            get {
+                return ResourceManager.GetString("releaseNotes_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text file.
         /// </summary>
         internal static string text_file {
             get {

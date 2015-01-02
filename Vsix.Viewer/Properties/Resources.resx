@@ -251,7 +251,7 @@
     <comment>file dialog in new manifest</comment>
   </data>
   <data name="text_file" xml:space="preserve">
-    <value>text file</value>
+    <value>Text file</value>
     <comment>file dialog in new manifest</comment>
   </data>
   <data name="web_file" xml:space="preserve">
@@ -274,5 +274,13 @@
   </data>
   <data name="TextManifestVersionLabel" xml:space="preserve">
     <value>Manifest Version</value>
+  </data>
+  <data name="all_files" xml:space="preserve">
+    <value>All files</value>
+    <comment>file dialog in new manifest</comment>
+  </data>
+  <data name="releaseNotes_title" xml:space="preserve">
+    <value>Select Release Notes file</value>
+    <comment>file dialog in new manifest</comment>
   </data>
 </root>

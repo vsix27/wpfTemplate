@@ -260,20 +260,20 @@ namespace Vsix.Viewer.ViewModels
                 var doc = new XmlDocument( );
                 doc.LoadXml(GetManifestTemplateV1(false));
                 var ndIdentity = doc.SelectSingleNode("//Identifier");
-                SetNodeValue(ndIdentity, "@Id", ProductId);
+                XmlHelper.SetNodeValue(ndIdentity, "@Id", ProductId);
 
-                SetNodeValue(doc, "//Name", ProductName);
-                SetNodeValue(doc, "//Version", Version);
-                SetNodeValue(doc, "//Author", Author);
-                SetNodeValue(doc, "//Description", Description);
+                XmlHelper.SetNodeValue(doc, "//Name", ProductName);
+                XmlHelper.SetNodeValue(doc, "//Version", Version);
+                XmlHelper.SetNodeValue(doc, "//Author", Author);
+                XmlHelper.SetNodeValue(doc, "//Description", Description);
 
-                SetNodeValue(doc, "//MoreInfoUrl", MoreInfoUrl, true);
-                SetNodeValue(doc, "//License", LicensePath, true);
-                SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
-                SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
-                SetNodeValue(doc, "//Icon", IconPath, true);
-                SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
-                SetNodeValue(doc, "//Tags", Tags, true);
+                XmlHelper.SetNodeValue(doc, "//MoreInfoUrl", MoreInfoUrl, true);
+                XmlHelper.SetNodeValue(doc, "//License", LicensePath, true);
+                XmlHelper.SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
+                XmlHelper.SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
+                XmlHelper.SetNodeValue(doc, "//Icon", IconPath, true);
+                XmlHelper.SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
+                XmlHelper.SetNodeValue(doc, "//Tags", Tags, true);
 
                 s = XmlHelper.IndentXml(doc);
                 s = SetManifestTemplateV12Namespaces(s);
@@ -295,18 +295,18 @@ namespace Vsix.Viewer.ViewModels
                 doc.LoadXml(GetManifestTemplateV2(false));
 
                 var ndIdentity = doc.SelectSingleNode("//Identity");
-                SetNodeValue(ndIdentity, "@Id", ProductId);
-                SetNodeValue(ndIdentity, "@Version", Version);
-                SetNodeValue(ndIdentity, "@Publisher", Author);
-                SetNodeValue(doc, "//DisplayName", ProductName);
-                SetNodeValue(doc, "//Description", Description);
-                SetNodeValue(doc, "//MoreInfo", MoreInfoUrl, true);
-                SetNodeValue(doc, "//License", LicensePath, true);
-                SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
-                SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
-                SetNodeValue(doc, "//Icon", IconPath, true);
-                SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
-                SetNodeValue(doc, "//Tags", Tags, true);
+                XmlHelper.SetNodeValue(ndIdentity, "@Id", ProductId);
+                XmlHelper.SetNodeValue(ndIdentity, "@Version", Version);
+                XmlHelper.SetNodeValue(ndIdentity, "@Publisher", Author);
+                XmlHelper.SetNodeValue(doc, "//DisplayName", ProductName);
+                XmlHelper.SetNodeValue(doc, "//Description", Description);
+                XmlHelper.SetNodeValue(doc, "//MoreInfo", MoreInfoUrl, true);
+                XmlHelper.SetNodeValue(doc, "//License", LicensePath, true);
+                XmlHelper.SetNodeValue(doc, "//GettingStartedGuide", GettingStartedGuidePath, true);
+                XmlHelper.SetNodeValue(doc, "//ReleaseNotes", ReleaseNotesPath, true);
+                XmlHelper.SetNodeValue(doc, "//Icon", IconPath, true);
+                XmlHelper.SetNodeValue(doc, "//PreviewImage", PreviewImagePath, true);
+                XmlHelper.SetNodeValue(doc, "//Tags", Tags, true);
 
                 s = XmlHelper.IndentXml(doc);
                 s = SetManifestTemplateV12Namespaces(s);
@@ -319,27 +319,33 @@ namespace Vsix.Viewer.ViewModels
             return s;
         }
 
-        private void SetNodeValue(XmlNode nd, string xPath, string ndValue, bool removeIfEmpty=false)
-        {
-            if (nd == null) return;
-            try
-            {
-                var ndSel = nd.SelectSingleNode(xPath);
-                if (ndSel == null) return;
-
-                if (removeIfEmpty && string.IsNullOrEmpty(ndValue) && ndSel.ParentNode != null)
-                {
-                    ndSel.ParentNode.RemoveChild(ndSel);
-                    return;
-                }
-                ndSel.InnerText = "" + ndValue;
-            }
-            catch (Exception ex) { LogHelper.LogError(ex); }
-        }
 
         public const string MnfstV1Nms = "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns='http://schemas.microsoft.com/developer/vsx-schema/2010'";
         public const string MnfstV2Nms = "xmlns='http://schemas.microsoft.com/developer/vsx-schema/2011'  xmlns:d='http://schemas.microsoft.com/developer/vsx-schema-design/2011'";
 
+        /// <summary>
+        /// add namespaces to xml string, based on Manifest version 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public string SetManifestTemplateV12Namespaces(string s)
+        {
+            if (s.Contains("<PackageManifest>"))
+                return s.Replace("<PackageManifest>", "<PackageManifest Version='2.0.0' " + MnfstV2Nms + ">");
+            if (s.Contains("<PackageManifest "))
+                return s.Replace("<PackageManifest", "<PackageManifest " + MnfstV2Nms);
+            if (s.Contains("<Vsix>"))
+                return s.Replace("<Vsix>", "<Vsix Version='1.0.0' " + MnfstV1Nms + ">");
+            if (s.Contains("<Vsix "))
+                return s.Replace("<Vsix", "<Vsix " + MnfstV1Nms);
+            return s;
+        }
+
+        /// <summary>
+        /// empty manifest xml string for Manifest version 1 - Vsix root node
+        /// </summary>
+        /// <param name="useNameSpace"></param>
+        /// <returns></returns>
         public string GetManifestTemplateV1(bool useNameSpace)
         {
             string s = @"<?xml version='1.0' encoding='utf-8'?>";
@@ -370,13 +376,11 @@ namespace Vsix.Viewer.ViewModels
     </SupportedProducts>
     <SupportedFrameworkRuntimeEdition  MinVersion='2.0' MaxVersion='4.6'  />
   </Identifier>
-
   <References>
     <Reference Id='Microsoft.VisualStudio.MPF' MinVersion='10.0'>
       <Name>Visual Studio MPF</Name>
     </Reference>
   </References>
-
   <Content>
     <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
     <MefComponent>|%CurrentProject%;PkgdefProjectOutputGroup|</MefComponent>
@@ -384,20 +388,12 @@ namespace Vsix.Viewer.ViewModels
 </Vsix>";
             return s;
         }
-
-        public string SetManifestTemplateV12Namespaces(string s)
-        {
-            if (s.Contains("<PackageManifest>"))
-                return s.Replace("<PackageManifest>", "<PackageManifest Version='2.0.0' " + MnfstV2Nms + ">");
-            if (s.Contains("<PackageManifest "))
-                return s.Replace("<PackageManifest", "<PackageManifest " + MnfstV2Nms);
-            if (s.Contains("<Vsix>"))
-                return s.Replace("<Vsix>", "<Vsix Version='1.0.0' " + MnfstV1Nms + ">");
-            if (s.Contains("<Vsix "))
-                return s.Replace("<Vsix", "<Vsix " + MnfstV1Nms);
-            return s;
-        }
-
+       
+        /// <summary>
+        /// empty manifest xml string for Manifest version 2 - PackageManifest root node
+        /// </summary>
+        /// <param name="useNameSpace"></param>
+        /// <returns></returns>
         public string GetManifestTemplateV2(bool useNameSpace = false)
         {
             string s = @"<?xml version='1.0' encoding='utf-8'?>";
