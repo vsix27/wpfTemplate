@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -82,6 +83,6 @@ namespace Vsix.Viewer.Views
             Window window = GetWindow(this);
             if (window != null)
                 window.Close();
-        }        
+        }
     }
 }

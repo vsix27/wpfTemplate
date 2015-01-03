@@ -7,7 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContextMenu">
-                    <Border CornerRadius="5" BorderBrush="Black" BorderThickness="1" Background="Blue" SnapsToDevicePixels="True">
+                    <Border CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Background="LightGray" SnapsToDevicePixels="True">
                         <ItemsPresenter />
                     </Border>
                 </ControlTemplate>

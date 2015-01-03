@@ -169,6 +169,24 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open CodeBase location.
+        /// </summary>
+        internal static string menuCtxOpenCodeBaseLocation {
+            get {
+                return ResourceManager.GetString("menuCtxOpenCodeBaseLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Registry location.
+        /// </summary>
+        internal static string menuCtxOpenRegistryLocation {
+            get {
+                return ResourceManager.GetString("menuCtxOpenRegistryLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Error Report/comments.
         /// </summary>
         internal static string menuErrorReport {

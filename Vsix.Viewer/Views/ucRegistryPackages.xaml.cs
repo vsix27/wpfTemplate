@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Data;
-using System.Security.AccessControl;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Vsix.Common.Helpers;
 using Vsix.Viewer.Helpers;
+using Vsix.Viewer.Infrastructure;
 using Vsix.Viewer.ViewModels;
 
 namespace Vsix.Viewer.Views
@@ -16,50 +17,94 @@ namespace Vsix.Viewer.Views
     public partial class UcRegistryPackages : UserControl
     {
         private readonly RegistryPackageModel _viewModel;
+
         public UcRegistryPackages()
         {
             InitializeComponent();
-            //DataGridRegistryPackages.Columns.Clear();
+
             _viewModel = new RegistryPackageModel();
             this.DataContext = _viewModel;
-
-            // insert space before capital letter, handles acronims
-            // Regex.Replace(sKey, "(\\B[A-Z])", " $1"); // insert space before capital letter
-            Func<string, string> normalizeHeader = o => Regex.Replace(o, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1"); 
-
-            var dgc1 = new DataGridTemplateColumn();
-            foreach (string sKey in new RegistryPackage(null).ToStringPairs(true).Keys)
-            {
-                var dcText = new DataGridTextColumn
-                {
-                    Binding = new System.Windows.Data.Binding() {XPath = sKey},
-                    Header = normalizeHeader(sKey)
-                };
-                //DataGridRegistryPackages.Columns.Add(dcText);
-
-                //dgc1.SortMemberPath = sKey;
-                ////string sHeader = Regex.Replace(sKey, "(\\B[A-Z])", " $1"); // insert space before capital letter
-                //dgc1.Header = Regex.Replace(sKey, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1"); // insert space before capital letter
-                //dgc1.CanUserSort = true;
-                //dgc1.Width = new DataGridLength(100);
-                //dgc1.CanUserResize = true;
-                //dgc1.CellTemplate = new DataTemplate() ;
-              
-                //DataGridRegistryPackages.Columns.Add(dgc1);
-            }
-
-            /*
-             <DataGridTemplateColumn SortMemberPath="PackageName" Header="Package Name" Width="100" CanUserSort="true">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel><TextBlock Text="{Binding Path=PackageName}" /></StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-             */
             
+            DataGridRegistryPackages.ItemsSource = _viewModel.RegistryPackagesData;
+
+            _viewModel.RegistryPackagesData.ListChanged +=
+                delegate { DataGridRegistryPackages.ItemsSource = _viewModel.RegistryPackagesData; };
+
+            CtxMenu.Items.Clear();
+
+            CtxMenu.Items.Add(new MenuItem
+            {
+                Header = ResourcesHelper.Instance.GetString("menuCtxOpenCodeBaseLocation"),
+                Command = CommandOpenCodeBaseLocation
+            });
+            CtxMenu.Items.Add(new MenuItem
+            {
+                Header = ResourcesHelper.Instance.GetString("menuCtxOpenRegistryLocation"),
+                Command = CommandOpenRegistry
+            });
+        }
+        
+        private RegistryPackage LastRegistryPackage { get; set; }
+
+        private ICommand CommandOpenCodeBaseLocation
+        {
+            get { return new RelayCommand(OpenCodeBaseLocation); }
         }
 
+        private void OpenCodeBaseLocation()
+        {
+            if (string.IsNullOrEmpty(LastRegistryPackage.CodeBase)) return;
+            if (File.Exists(LastRegistryPackage.CodeBase))
+            {
+                Process.Start(Directory.GetParent(LastRegistryPackage.CodeBase).FullName);
+            }
+        }
+
+        private ICommand CommandOpenRegistry
+        {
+            get { return new RelayCommand(OpenRegistry); }
+        }
+
+        private void OpenRegistry()
+        {
+            try
+            {
+                RegistryHelper.OpenToKey(LastRegistryPackage.RegistryPath);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.LogError(ex);
+            }
+        }
+
+        private void DataGridRegistryPackages_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var c in DataGridRegistryPackages.Columns)
+            {
+                switch ("" + c.Header)
+                {
+                    case "RegistryPath":
+                    case "Default":
+                        c.Width = 70;
+                        break;
+                    case "RegistryGuid":
+                    case "ProductVersion":
+                    case "VisualStudioVersion":
+                        c.Width = 40;
+                        break;
+                    case "CodeBase":
+                        c.Width = 200;
+                        break;
+                    case "ProductName":
+                        c.Width = 200;
+                        break;
+                    default:
+                        break;
+                }
+                c.Header = ResourcesHelper.CamelToSentence(c.Header.ToString());
+                Debug.WriteLine(c.Header);
+            }
+        }
         public UcRegistryPackages(string csproj)
         {
             InitializeComponent();
@@ -79,6 +124,19 @@ namespace Vsix.Viewer.Views
                 LogHelper.LogError(ex);
             }
             this.DataContext = _viewModel;
+        }
+
+        private void DataGridRegistryPackages_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LastRegistryPackage = null;
+            var dg = sender as DataGrid;
+            if (dg == null) return;
+            LastRegistryPackage = dg.CurrentItem as RegistryPackage;
+        
+            //Debug.WriteLine(dg.CurrentItem);
+            //Debug.WriteLine(dg.CurrentCell);
+            //Debug.WriteLine(dg.CurrentColumn);
+            //Debug.WriteLine(e);
         }
     }
 }

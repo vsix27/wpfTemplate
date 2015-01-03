@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="200" d:DesignWidth="500">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
-                <RowDefinition Height="80*" />
+                <RowDefinition Height="33*" Name="UcGrigRowHeight" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*"/>
-                <ColumnDefinition Width="60*"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="44*" Name="UcGrigRowWidth"/>
             </Grid.ColumnDefinitions>
             
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin ="10,0,10,0"
@@ -23,46 +23,27 @@
                        ItemsSource="{Binding VisualStudioVersions}" 
                        SelectedItem="{Binding VisualStudioVersion, Mode=TwoWay}" />
             
-            <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+            <!-- AutoGenerateColumns="True" ItemsSource="{Binding RegistryPackagesData}"  -->
+            <DataGrid  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                      AlternatingRowBackground="Linen"
+                      Loaded="DataGridRegistryPackages_OnLoaded"
+                      SelectionChanged="DataGridRegistryPackages_OnSelectionChanged"
+                      IsReadOnly="True"
                       CanUserResizeColumns="True" CanUserResizeRows="False" 
-                      VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" 
-                      Name="DataGridRegistryPackages"
-                      ItemsSource="{Binding RegistryPackagesData}" AutoGenerateColumns="True"
-                      CanUserSortColumns="True" CanUserDeleteRows="False">
-           <!-- 
-                                             
-
-                DataTemplate inner sample
-                                <Image Source="{Binding Image}" />                                 
-                                <TextBlock>
-                                    <TextBlock.Text><Binding Path="CodeBase" ConverterCulture="en-GB" StringFormat="{}{0:MM/dd/yyyy}"/>                                    </TextBlock.Text>
-                                </TextBlock>
-                                <StackPanel><TextBlock Text="{Binding Path=PackageName}" /></StackPanel>
-                                -->
-                <!-- 
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn SortMemberPath="PackageName" Header="Package Name" Width="100" CanUserSort="true">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel><TextBlock Text="{Binding Path=PackageName}" /></StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn  SortMemberPath="CodeBase" Header="Code Base" Width="100"CanUserSort="true">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Path=CodeBase}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
+                      VerticalScrollBarVisibility="Visible" 
+                      HorizontalScrollBarVisibility="Visible" 
+                      Name="DataGridRegistryPackages" 
+                      CanUserSortColumns="True" CanUserDeleteRows="False" >
+                <DataGrid.ContextMenu>
+                    <!--style set in MenuStyles.xaml-->
+                    <ContextMenu Name="CtxMenu" >
+                        <MenuItem Header="... open folder" />
+                        <MenuItem Header="... open regisry"  />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 
-                  -->
             </DataGrid>
-                
-
+          
         </Grid>
     </Grid>
 </UserControl>

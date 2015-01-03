@@ -17,8 +17,6 @@ namespace Vsix.Common
 {
     public class CommonUtilities
     {
-        private static string ILClientFolderName = "ILClient";
-        private static string ILDeltaFolder = "VIA";
 
         [DllImport("Shell32.dll")]
         private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
@@ -27,30 +25,7 @@ namespace Vsix.Common
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool IsWow64Process([In] IntPtr hProcess, [Out] out bool wow64Process);
 
-        public static String ConvertErrorCode(String code, String subcode)
-        {
-            String ErrorCode = String.Empty;
-            String strConst = String.Empty;
-
-            if (code != null && code != "")
-            {
-                code = code.Replace("-", "_");
-                strConst = "IL_ARC_" + code + "_";
-            }
-            else
-            {
-                strConst = "IL_ARC_";
-            }
-
-            if (subcode != null && subcode != "")
-            {
-                subcode = subcode.Replace("-", "_");
-                strConst = strConst + subcode;
-            }
-
-            return strConst;
-        }
-
+       
         public static void SerializeObject(string filename, Dictionary<string, string> dictFiles)
         {
             Stream stream = File.Open(filename, FileMode.Create);
@@ -71,32 +46,16 @@ namespace Vsix.Common
             }
             return dictFiles;
         }
-
-        public static string GetExchangeFilesDictionary(string exchangeId)
-        {
-            string retVal = "";
-
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            folderPath = Path.Combine(folderPath, ILClientFolderName);
-            folderPath = Path.Combine(folderPath, ILDeltaFolder);
-
-            retVal = Path.Combine(folderPath, exchangeId + ".dat");
-
-            return retVal;
-        }
-
-
-
+        
         public static string GetMyDocumentsFolderLocation()
         {
-            string retVal = "";
+            string retVal;
 
             try
             {
-                if (Environment.OSVersion.Version.Major <= 5)
-                    retVal = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                else
-                    retVal = Environment.GetEnvironmentVariable("USERPROFILE");
+                retVal = Environment.OSVersion.Version.Major <= 5
+                    ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+                    : Environment.GetEnvironmentVariable("USERPROFILE");
             }
             catch (Exception)
             {
@@ -506,8 +465,9 @@ namespace Vsix.Common
         /// <param name="mailSubject"></param>
         public static void ShowSendLogFilesPopup(string emailTo, string logfilesPath, string applicationName, string mailContent, string mailSubject = null)
         {
-            string supportEmailSubject =string.IsNullOrEmpty(mailSubject)?
-                string.Format("{0} Logs as of {1}", applicationName, DateTime.Now.ToString("G")) : mailSubject;
+            string supportEmailSubject = string.IsNullOrEmpty(mailSubject)
+                ? string.Format("{0} Logs as of {1}", applicationName, DateTime.Now.ToString("G"))
+                : mailSubject;
 
             string archive = CompressFolderRecursive(logfilesPath);
 

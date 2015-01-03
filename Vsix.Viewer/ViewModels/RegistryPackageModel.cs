@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
@@ -15,7 +17,7 @@ namespace Vsix.Viewer.ViewModels
         private RegistryPackagePresenter _presenter;
         private string _visualStudioVersion;
         private List<string> _visualStudioVersions;
-        private List<RegistryPackage> _registryPackagesData;
+        private BindingList<RegistryPackage> _registryPackagesData;
 
         public RegistryPackageModel()
         {
@@ -29,13 +31,13 @@ namespace Vsix.Viewer.ViewModels
         {
             VisualStudioVersionLabel = ResourcesHelper.Instance.GetString("TestVisualStudioVersionLabel");
 
-            RegistryPackagesData = new List<RegistryPackage>();
+            RegistryPackagesData = new BindingList<RegistryPackage>();
 
             //InitSampleRegistryPackagesData(5);
             InitRegistryPackagesData();
-            
-            RegistryPackagesData =
-                RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList();
+
+            RegistryPackagesData = new BindingList<RegistryPackage>(
+                RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
         }
 
         private void InitRegistryPackagesData()
@@ -65,6 +67,14 @@ namespace Vsix.Viewer.ViewModels
                     RegistryPackagesDataAll.Add(rkp);
                 }
             }
+            string preferredVS = ConfigHelper.GetSetting("preferredVS");
+      
+            if (!string.IsNullOrEmpty(preferredVS))
+            {
+                string preferredVSa = VisualStudioVersions.FirstOrDefault(o => o.StartsWith(preferredVS));
+                if (!string.IsNullOrEmpty(preferredVSa)) VisualStudioVersion = preferredVSa;
+            }
+            else
             VisualStudioVersion = VisualStudioVersions.FirstOrDefault();
         }
 
@@ -99,12 +109,21 @@ namespace Vsix.Viewer.ViewModels
             VisualStudioVersion = VisualStudioVersions.FirstOrDefault();
         }
 
-        public List<RegistryPackage> RegistryPackagesData
+
+        //   change  List<RegistryPackage> to BindingList<RegistryPackage> to notify list change
+        public BindingList<RegistryPackage> RegistryPackagesData
         {
             get { return _registryPackagesData; }
             set
             {
-                _registryPackagesData = value;
+                if (_registryPackagesData == null)
+                    _registryPackagesData = value;
+                else
+                {
+                    _registryPackagesData.Clear();
+                    foreach (var v in value)
+                        _registryPackagesData.Add(v);
+                }
                 OnPropertyChanged("RegistryPackagesData");
             }
         }
@@ -121,8 +140,8 @@ namespace Vsix.Viewer.ViewModels
                 _visualStudioVersion = value;
                 //OnPropertyChanged("VisualStudioVersion");
                 // refill datagrid
-                RegistryPackagesData =
-                    RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList();
+                RegistryPackagesData = new BindingList<RegistryPackage>(
+                    RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using log4net;
@@ -293,5 +294,16 @@ namespace Vsix.Common.Helpers
             }
         }
 
+        /// <summary>Opens RegEdit to the provided key
+        /// <para><example>@"Computer\HKEY_CURRENT_USER\Software\MyCompanyName\MyProgramName\"</example></para>
+        /// </summary>
+        /// <param name="fullKeyPath"></param>
+        public static void OpenToKey(string fullKeyPath)
+        {
+            RegistryKey rKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Applets\Regedit", true);
+            if (rKey == null) return;
+            rKey.SetValue("LastKey", fullKeyPath);
+            Process.Start("regedit.exe");
+        }
     }
 }

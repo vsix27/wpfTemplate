@@ -286,4 +286,10 @@
   <data name="TestVisualStudioVersionLabel" xml:space="preserve">
     <value>Visual Studio Version</value>
   </data>
+  <data name="menuCtxOpenCodeBaseLocation" xml:space="preserve">
+    <value>Open CodeBase location</value>
+  </data>
+  <data name="menuCtxOpenRegistryLocation" xml:space="preserve">
+    <value>Open Registry location</value>
+  </data>
 </root>

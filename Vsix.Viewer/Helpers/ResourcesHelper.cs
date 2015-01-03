@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Vsix.Common.Helpers;
 using Vsix.Viewer.Properties;
@@ -129,6 +130,17 @@ namespace Vsix.Viewer.Helpers
 
             langs.Add(CultureInfo.CurrentUICulture.Name);
             return langs;
+        }
+
+        /// <summary>
+        /// insert space before capital letter, handles acronims
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string CamelToSentence(string s)
+        {
+            //Func<string, string> normalizeHeader = o => Regex.Replace(o, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
+            return !string.IsNullOrEmpty(s) ? Regex.Replace(s, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1") : s;
         }
     }
 }
