@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Vsix.Viewer.Views.UcVsixDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Vsix.Viewer;component/Resources/Styles/TreeViewStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="40*" />
+        </Grid.ColumnDefinitions>
+        <!-- DataContext="{Binding TvFiles}" 
+             <TreeViewItem IsExpanded="True">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="16" Height="16" Source="/Vsix.Viewer;component/Resources/FileTypes/folder.ico"/>
+                    <Label Content="sample folder" />
+                </StackPanel>
+            </TreeViewItem>
+       
+        -->
+        <TreeView Name="TvMain" Grid.Column="0" Grid.Row="0" />
+        <TextBox Grid.Column="1" Grid.Row="0"  Margin="2" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"
+                       Text="{Binding OutputText, FallbackValue='some output...'}" />
+
+    </Grid>
+</UserControl>

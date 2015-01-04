@@ -104,14 +104,23 @@
     <Compile Include="Helpers\ResourcesHelper.cs" />
     <Compile Include="Presenters\ManifestPresenter.cs" />
     <Compile Include="Presenters\RegistryPackagePresenter.cs" />
+    <Compile Include="Presenters\VsixDetailsPresenter.cs" />
     <Compile Include="ViewModels\IManifestModel.cs.cs" />
     <Compile Include="ViewModels\IRegistryPackageModel.cs" />
+    <Compile Include="ViewModels\IVsixDetailsModel.cs" />
     <Compile Include="ViewModels\RegistryPackageModel.cs" />
+    <Compile Include="ViewModels\VsixDetailsModel.cs" />
     <Compile Include="Views\ManifestWindow.xaml.cs">
       <DependentUpon>ManifestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ucRegistryPackages.xaml.cs">
       <DependentUpon>ucRegistryPackages.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UcViewerWindow.xaml.cs">
+      <DependentUpon>UcViewerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ucVsixDetails.xaml.cs">
+      <DependentUpon>ucVsixDetails.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Styles\Brush.CheckBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -149,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\Styles\TreeViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Styles\WindowStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -161,12 +174,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="frmVsixManifest.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmVsixManifest.Designer.cs">
-      <DependentUpon>frmVsixManifest.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ManifestHelper.cs" />
     <Compile Include="Infrastructure\PropertySupport.cs" />
@@ -194,6 +201,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UcViewerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ucVsixDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -204,30 +219,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="frmVsixManifest.DE.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.ES.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.FR.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.IT.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.JA.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.resx">
-      <DependentUpon>frmVsixManifest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.RU.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmVsixManifest.ZH.resx">
-      <DependentUpon>frmVsixManifest.resx</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.DE.resx">
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
@@ -265,6 +256,30 @@
     <None Include="Properties\template-builder.props" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Info.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Resources\FileTypes\csharp3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\doc.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\folder.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\icon_xml.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\picture.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\RichText.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\FileTypes\text.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\sync.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -280,6 +295,7 @@
       <Name>Vsix.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(TemplateBuilderTargets)" Condition="Exists('$(TemplateBuilderTargets)')" Label="TemplateBuilder" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

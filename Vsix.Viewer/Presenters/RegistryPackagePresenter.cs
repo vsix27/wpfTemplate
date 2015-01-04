@@ -10,13 +10,15 @@ namespace Vsix.Viewer.Presenters
         //private readonly BackgroundWorker _bgWorker;
 
         public RegistryPackagePresenter(IRegistryPackageModel viewModel)
-        {           
+        {
+            _viewModel = viewModel;
             //// initialize bgWorker
             //_bgWorker = new BackgroundWorker();
             //_bgWorker.DoWork += BgWorkerDoWork;
             //_bgWorker.RunWorkerCompleted += BgWorkerRunWorkerCompleted;
 
         }
+
         //private void BgWorkerDoWork(object sender, DoWorkEventArgs e)
         //{
         //    ProcessFiles();

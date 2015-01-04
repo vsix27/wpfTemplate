@@ -44,7 +44,10 @@
                 <Separator />
                 <MenuItem Header="{Binding TextNewVsix, FallbackValue='new ...'}" Command="{Binding CommandNewVsix}" ToolTip="new..."  />
                 <Separator />
-                <MenuItem Header="{Binding TextOpenVsix, FallbackValue='open ...'}" Command="{Binding CommandOpenVsix}" ToolTip="open..." />
+                <MenuItem Header="{Binding TextOpenVsix, FallbackValue='open ...'}" ToolTip="open..." >
+                    <MenuItem Header="{Binding TextOpenVsixPrj, FallbackValue='visual studio project template vsix package...'}" Command="{Binding CommandOpenVsixPrj}" ToolTip="open project template vsix..." />
+                    <MenuItem Header="{Binding TextOpenVsixAny, FallbackValue='visual studio ANY vsix package ...'}" Command="{Binding CommandOpenVsix}" ToolTip="open any vsix..." />
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="{Binding TextSaveVsix, FallbackValue='save...'}" Command="{Binding CommandSaveVsix}" ToolTip="new..."  />
                 <Separator />

@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="PlannerFont" >../Resources/#Planer</FontFamily>
+
+    <Style x:Key="TreeExpanded" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded}">
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

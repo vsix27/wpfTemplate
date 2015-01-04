@@ -34,7 +34,10 @@ namespace Vsix.Viewer.ViewModels
             TextViewLog = ResourcesHelper.Instance.GetString("menuViewLog");
             TextViewBindings = ResourcesHelper.Instance.GetString("menuViewBindings");
             TextViewStyles = ResourcesHelper.Instance.GetString("menuViewStyles");
-
+            TextOpenVsixAny = ResourcesHelper.Instance.GetString("menuTextOpenVsixAny");
+            TextOpenVsixPrj = ResourcesHelper.Instance.GetString("menuTextOpenVsixPrj");
+            VsixPackage = ResourcesHelper.Instance.GetString("vsix_package");
+            
             TextProcessFiles = "process files";
             
 #if DEBUG 
@@ -109,8 +112,12 @@ namespace Vsix.Viewer.ViewModels
             set { _textViewLog = value; OnPropertyChanged("TextViewLog"); }
         }
 
-        public string TextProcessFiles { get; set; }
+        public string TextOpenVsixAny { get; set; }
+        public string TextOpenVsixPrj { get; set; }
 
+        public string TextProcessFiles { get; set; }
+        public string VsixPackage { get; set; }
+        
         public string TextAbout
         {
             get { return _textAbout; }
@@ -219,6 +226,10 @@ namespace Vsix.Viewer.ViewModels
 
         public ICommand CommandOpenVsix { get { return new RelayCommand(OpenVsix); } }
         public void OpenVsix() { OnPropertyChanged("OpenVsix"); }
+
+        public ICommand CommandOpenVsixPrj { get { return new RelayCommand(OpenVsixPrj); } }
+        public void OpenVsixPrj() { OnPropertyChanged("OpenVsixPrj"); }
+        
 
         // short process without thread
         public ICommand CommandSaveVsix{ get { return new RelayCommand(SaveVsix); } }

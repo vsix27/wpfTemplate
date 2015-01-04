@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Vsix.Common.Helpers;
 using Vsix.Viewer.Helpers;
 using Vsix.Viewer.ViewModels;
+using Vsix.Viewer.Views;
 
 namespace Vsix.Viewer.Presenters
 {
@@ -193,7 +194,7 @@ namespace Vsix.Viewer.Presenters
 
         private void NewVsix()
         {
-            var frm = new frmVsixManifest();
+            var frm = new ManifestWindow();
             frm.ShowDialog();
         }
         

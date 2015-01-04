@@ -9,6 +9,7 @@ namespace Vsix.Viewer.ViewModels
         string FolderPath { get; set; }
         string OutputText { get; set; }
         string ErrorText { get; set; }
+        string VsixPackage { get; set; }
         string VsixPath { get; set; }
         string VsixPathUnpacked { get; set; }
     }

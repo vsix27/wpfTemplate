@@ -1,0 +1,22 @@
+﻿<Window xmlns:views="clr-namespace:Vsix.Viewer.Views"  x:Class="Vsix.Viewer.Views.UcViewerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="UcViewerWindow" Height="300" Width="600"
+         Style="{DynamicResource MainWindowStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Vsix.Viewer;component/Resources/Styles/DesktopWindowsStyle.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Vsix.Viewer;component/Resources/Styles/LoginStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Vsix.Viewer;component/Resources/Styles/SettingsStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Vsix.Viewer;component/Resources/Styles/WindowStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*" />
+        </Grid.RowDefinitions>
+        <views:UcVsixDetails Grid.Row="0" Grid.Column="0" />
+    </Grid>
+</Window>

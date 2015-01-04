@@ -250,6 +250,24 @@ namespace Vsix.Viewer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Visual Studio vsix package.
+        /// </summary>
+        internal static string menuTextOpenVsixAny {
+            get {
+                return ResourceManager.GetString("menuTextOpenVsixAny", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visual Studio project template vsix package.
+        /// </summary>
+        internal static string menuTextOpenVsixPrj {
+            get {
+                return ResourceManager.GetString("menuTextOpenVsixPrj", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to View Bindings in xaml files.
         /// </summary>
         internal static string menuViewBindings {
@@ -462,6 +480,15 @@ namespace Vsix.Viewer.Properties {
         internal static string TextVsixTagsLabel {
             get {
                 return ResourceManager.GetString("TextVsixTagsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Vsix package.
+        /// </summary>
+        internal static string vsix_package {
+            get {
+                return ResourceManager.GetString("vsix_package", resourceCulture);
             }
         }
         

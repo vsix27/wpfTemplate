@@ -10,6 +10,5 @@ namespace Vsix.Viewer.ViewModels
 
         string VisualStudioVersion { get; set; }
         List<string> VisualStudioVersions { get; set; }
-        //BindingList<RegistryPackage> RegistryPackagesData { get; set; }
     }
 }

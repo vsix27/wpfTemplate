@@ -292,4 +292,14 @@
   <data name="menuCtxOpenRegistryLocation" xml:space="preserve">
     <value>Open Registry location</value>
   </data>
+  <data name="menuTextOpenVsixAny" xml:space="preserve">
+    <value>Visual Studio vsix package</value>
+  </data>
+  <data name="menuTextOpenVsixPrj" xml:space="preserve">
+    <value>Visual Studio project template vsix package</value>
+  </data>
+  <data name="vsix_package" xml:space="preserve">
+    <value>Select Vsix package</value>
+    <comment>file dialog</comment>
+  </data>
 </root>

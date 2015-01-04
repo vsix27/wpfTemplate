@@ -350,6 +350,8 @@ namespace Vsix.Viewer.ViewModels
         {
             string s = @"<?xml version='1.0' encoding='utf-8'?>";
 
+            // <Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+
             if (useNameSpace)
                 s += @"<Vsix Version='1.0.0' " + MnfstV1Nms + ">";
             else
@@ -384,6 +386,7 @@ namespace Vsix.Viewer.ViewModels
   <Content>
     <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
     <MefComponent>|%CurrentProject%;PkgdefProjectOutputGroup|</MefComponent>
+    <ProjectTemplate/>
   </Content>
 </Vsix>";
             return s;

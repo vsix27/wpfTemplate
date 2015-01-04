@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Info>
+  <Links>
+    <Item caption="How to create a multi project template" url="https://github.com/ligershark/side-waffle/wiki/How-to-create-a-multi-project-template" />
+    <Item caption="Simplifying the WPF TreeView by Using the ViewModel Pattern" url="http://www.codeproject.com/Articles/26288/Simplifying-the-WPF-TreeView-by-Using-the-ViewMode" />
+  </Links>
+  
+</Info>

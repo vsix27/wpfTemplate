@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using Ionic.Utils.Zip;
 using Vsix.Common.Helpers;
 using Vsix.Viewer.ViewModels;
+using Vsix.Viewer.Views;
 
 namespace Vsix.Viewer.Presenters
 {
@@ -75,6 +76,10 @@ namespace Vsix.Viewer.Presenters
                     OpenVsix();
                     break;
 
+                case "OpenVsixPrj":
+                    OpenVsixPrj();
+                    break;
+                    
                 case "SaveVsix":
                     SaveVsix();
                     break;
@@ -117,47 +122,62 @@ namespace Vsix.Viewer.Presenters
 
         private void NewVsix()
         {
-            var frm = new frmVsixManifest();
+            var frm = new ManifestWindow();
             frm.ShowDialog();
         }
-        private void OpenVsix()
+
+        private OpenFileDialog SelectVsixDialog()
         {
-            var dialog = new OpenFileDialog
+            return new OpenFileDialog
             {
                 Filter = @"Vsix packages (.vsix)|*.vsix",
                 Multiselect = false,
                 FilterIndex = 1,
-                Title=@"Select Vsix package ",
-                RestoreDirectory=true,
-                InitialDirectory=AppDomain.CurrentDomain.BaseDirectory ,
+                Title = _viewModel.VsixPackage,
+                RestoreDirectory = true,
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
             };
-            //dialog.Filter = @"Vsix packages (.vsix)|*.vsix|All Files (*.*)|*.*";
-            if (dialog.ShowDialog() == DialogResult.OK)
+        }
+
+        private void OpenVsixPrj()
+        {
+            var dialog = SelectVsixDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+        }
+
+        private void OpenVsix()
+        {
+            var frm = new UcViewerWindow();
+            frm.ShowDialog();
+            return;
+
+            var dialog = SelectVsixDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            _viewModel.VsixPath = dialog.FileName;
+            _viewModel.VsixPathUnpacked = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            Directory.CreateDirectory(_viewModel.VsixPathUnpacked);
+            using (var decompress = ZipFile.Read(_viewModel.VsixPath))
             {
-                _viewModel.VsixPath = dialog.FileName;
-                _viewModel.VsixPathUnpacked = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-                Directory.CreateDirectory(_viewModel.VsixPathUnpacked);
-                using (var decompress = ZipFile.Read(_viewModel.VsixPath))
+                foreach (var e in decompress)
                 {
-                    foreach (var e in decompress)
-                    {
-                        e.Extract(_viewModel.VsixPathUnpacked, true);
-                        /*
+                    e.Extract(_viewModel.VsixPathUnpacked, true);
+                    /*
                          FileName: "TemplateBuilder.dll"
                          LocalFileName: "TemplateBuilder.dll"
                          IsDirectory: false
                          */
-                        //Console.WriteLine(e.LocalFileName);
-                    }
-                    /* expected: files: 
+                    //Console.WriteLine(e.LocalFileName);
+                }
+                /* expected: files: 
                             [Content_Types].xml
                             extension.vsixmanifest
                             TemplateBuilder.dll
                             Output\ProjectTemplates\CSharp\Windows%20Desktop\WpfDemoWithMvvMp.project.zip
                      * */
-                }
-                Process.Start(_viewModel.VsixPathUnpacked);
             }
+            Process.Start(_viewModel.VsixPathUnpacked);
+
         }
 
         #region file samler [Content_Types].xml, extension.vsixmanifest
