@@ -13,10 +13,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid Name="gr">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*" />
         </Grid.RowDefinitions>
-        <views:UcVsixDetails Grid.Row="0" Grid.Column="0" />
+        <views:UcVsixDetails Grid.Row="0" Grid.Column="0" ContentPath="C:\Users\Sasha\Downloads" x:Name ="wuc" />
     </Grid>
 </Window>

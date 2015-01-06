@@ -61,13 +61,13 @@ namespace Vsix.Viewer.Presenters
                         Process.Start(logfile);
                     else
                         _viewModel.ErrorText = "log file not detected";
-                    
+
                     break;
 
                 //case "NewVsix":
                 //    NewVsix();
                 //    break;
-                   
+
                 case "ErrorReport":
                     //ErrorReport();
                     break;
@@ -79,7 +79,7 @@ namespace Vsix.Viewer.Presenters
                 case "OpenVsixPrj":
                     OpenVsixPrj();
                     break;
-                    
+
                 case "SaveVsix":
                     SaveVsix();
                     break;
@@ -101,9 +101,9 @@ namespace Vsix.Viewer.Presenters
                 case "ProcessFiles":
                     _bgWorker.RunWorkerAsync();
                     break;
-                    //case "GetTime":
-                    //    _viewModel.OutputText = DateTime.Now +_nl;
-                    //    break;                               
+                //case "GetTime":
+                //    _viewModel.OutputText = DateTime.Now +_nl;
+                //    break;                               
 
                     #endregion
 
@@ -118,7 +118,7 @@ namespace Vsix.Viewer.Presenters
 
         public string _nl = Environment.NewLine;
 
-      
+
 
         private void NewVsix()
         {
@@ -147,40 +147,43 @@ namespace Vsix.Viewer.Presenters
 
         private void OpenVsix()
         {
-            var frm = new UcViewerWindow();
-            frm.ShowDialog();
-            return;
-
             var dialog = SelectVsixDialog();
             if (dialog.ShowDialog() != DialogResult.OK) return;
 
-            _viewModel.VsixPath = dialog.FileName;
-            _viewModel.VsixPathUnpacked = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-            Directory.CreateDirectory(_viewModel.VsixPathUnpacked);
-            using (var decompress = ZipFile.Read(_viewModel.VsixPath))
+            var frm = new UcViewerWindow
             {
-                foreach (var e in decompress)
-                {
-                    e.Extract(_viewModel.VsixPathUnpacked, true);
-                    /*
-                         FileName: "TemplateBuilder.dll"
-                         LocalFileName: "TemplateBuilder.dll"
-                         IsDirectory: false
-                         */
-                    //Console.WriteLine(e.LocalFileName);
-                }
-                /* expected: files: 
-                            [Content_Types].xml
-                            extension.vsixmanifest
-                            TemplateBuilder.dll
-                            Output\ProjectTemplates\CSharp\Windows%20Desktop\WpfDemoWithMvvMp.project.zip
-                     * */
-            }
-            Process.Start(_viewModel.VsixPathUnpacked);
+               
+            };
+            frm.ShowDialog();
 
-        }
+            //_viewModel.VsixPath = dialog.FileName;
+            //_viewModel.VsixPathUnpacked = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+            //Directory.CreateDirectory(_viewModel.VsixPathUnpacked);
+            //using (var decompress = ZipFile.Read(_viewModel.VsixPath))
+            //{
+            //    foreach (var e in decompress)
+            //    {
+            //        e.Extract(_viewModel.VsixPathUnpacked, true);
+            //        /*
+            //             FileName: "TemplateBuilder.dll"
+            //             LocalFileName: "TemplateBuilder.dll"
+            //             IsDirectory: false
+            //             */
+            //        //Console.WriteLine(e.LocalFileName);
+            //    }
+            //    /* expected: files: 
+            //                [Content_Types].xml
+            //                extension.vsixmanifest
+            //                TemplateBuilder.dll
+            //                Output\ProjectTemplates\CSharp\Windows%20Desktop\WpfDemoWithMvvMp.project.zip
+            //         * */
+            //}
+            //Process.Start(_viewModel.VsixPathUnpacked);
+        
+    }
+    
 
-        #region file samler [Content_Types].xml, extension.vsixmanifest
+    #region file sampler [Content_Types].xml, extension.vsixmanifest
         /* file 
          * [Content_Types].xml - static
           
@@ -214,7 +217,7 @@ namespace Vsix.Viewer.Presenters
 
         #endregion
 
-        private void SaveVsix() { }
+        private void SaveVsix() {; }
 
         #region xaml attribute debug
 
