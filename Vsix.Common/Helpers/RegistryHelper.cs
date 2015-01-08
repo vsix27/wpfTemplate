@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using log4net;
 using Microsoft.Win32;
 
@@ -136,6 +138,46 @@ namespace Vsix.Common.Helpers
             return rk.GetValueNames();
         }
 
+        /// <summary>
+        /// list 
+        /// "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\Extensions"
+        /// "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\IDE\\Extensions"
+        /// in each look for "extension.vsixmanifest" xml file - it will contain \\Metadata\DisplayName node with package name
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetVisualStudioExtensionPath()
+        {
+            /* <Metadata>          
+                    <Identity Id="ResourceManager.13c59f9d-07d6-4a55-9b02-f8bb91ba65e7" Version="1.0.0.0" Language="en-US" Publisher="Microsoft Corporation" />
+                    <DisplayName>Azure Resource Manager Tools (VS 2013)</DisplayName>
+                    <Description xml:space="preserve">A collection of features which help you get started using Azure Resource Manager, including a new project template, deployment template editing extensions, and tools to help you provision and deploy your resources and app.</Description>
+                    <GettingStartedGuide>http://go.microsoft.com/fwlink/?LinkId=397850</GettingStartedGuide>
+                    <Icon>Cloud_32x.png</Icon>
+                    <Tags>Azure, Cloud, Resource Manager, Provision, Deploy</Tags>
+             </Metadata>*/
+            var lst = new List<string>();
+            var registry = Registry.ClassesRoot;
+            var subKeyNames = registry.GetSubKeyNames();
+            var regex = new Regex(@"^VisualStudio\.sln\.(\d+)\.(\d+)$");
+            foreach (var subKeyName in subKeyNames)
+            {
+                var match = regex.Match(subKeyName);
+                if (match.Success)
+                {
+                    // HKEY_CLASSES_ROOT\VisualStudio.sln.10.0\shell\Open\command
+                    var vsCommand = "HKEY_CLASSES_ROOT\\" + match.Groups[0].Value + "\\shell\\open\\command";
+
+                    string s = RegistryHelper.Read(vsCommand, null);
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        s = s.Split("\"".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+                        s = Path.Combine(Directory.GetParent(s).FullName, "Extensions");
+                        lst.Add(s);
+                    }
+                }
+            }
+            return lst;
+        }
 
         // remove from comp startup
         public static void RemoveFromStartUp(string appName)
@@ -170,6 +212,8 @@ namespace Vsix.Common.Helpers
                 rk = Registry.LocalMachine;
             else if (root.Equals("HKEY_CURRENT_USER") || root.Equals("HKCU"))
                 rk = Registry.CurrentUser;
+            else if (root.Equals("HKEY_CLASSES_ROOT") || root.Equals("HKCR"))
+                rk = Registry.ClassesRoot;
             else
                 throw new Exception("invalid registry entry key provided: " + root);
 

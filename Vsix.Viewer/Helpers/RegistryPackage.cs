@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
 using Vsix.Common.Helpers;
 
 namespace Vsix.Viewer.Helpers
@@ -35,13 +38,18 @@ namespace Vsix.Viewer.Helpers
                 VisualStudioVersion = rways[4].Split('.')[0];
         }
 
+
+
         /// <summary>
-        /// returns list of strings with registry paths similar to 
+        /// [works for windows 8] returns list of strings with registry paths similar to 
         /// HKEY_CURRENT_USER\Software\Microsoft\VisualStudio\10.0Exp_Config\Packages
         /// </summary>
         /// <returns></returns>
         public static List<string> GetRegistryPackagesPath()
         {
+            //var list = RegistryHelper.GetVisualStudioExtensionPath();
+
+            // works for windows 8
             var sKeys = RegistryHelper.GetRegistryPath(RegistryHelper.HKCU_VS).GetSubKeyNames().ToList();
             Func<string, string> addPackage = (c) => RegistryHelper.HKCU_VS + "\\" + c + "\\Packages";
             var sKeysPacks = sKeys.Where(c => c.EndsWith("Exp_Config", StringComparison.OrdinalIgnoreCase)).Select(c => addPackage(c)).ToList();
