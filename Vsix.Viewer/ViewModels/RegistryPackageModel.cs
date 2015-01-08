@@ -18,6 +18,7 @@ namespace Vsix.Viewer.ViewModels
         private string _visualStudioVersion;
         private List<string> _visualStudioVersions;
         private BindingList<RegistryPackage> _registryPackagesData;
+        private BindingList<ManifestPackage > _manifestPackagesData;
 
         public RegistryPackageModel()
         {
@@ -34,17 +35,18 @@ namespace Vsix.Viewer.ViewModels
             RegistryPackagesData = new BindingList<RegistryPackage>();
 
             //InitSampleRegistryPackagesData(5);
+            InitVsSCommonPackagesData();
             InitRegistryPackagesData();
 
             RegistryPackagesData = new BindingList<RegistryPackage>(
                 RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
         }
 
-        private void InitRegistryPackagesData()
+        private void InitVsSCommonPackagesData()
         {
             // get registry data
-            VisualStudioVersions = new List<string>();
-            var sKeys = RegistryPackage.GetRegistryPackagesPath();
+            var sKeys = RegistryHelper .GetVisualStudioExtensionPath();
+            VisualStudioVersions = RegistryHelper.VisualStudioVersions;
             
             if (RegistryPackagesDataAll == null)
                 RegistryPackagesDataAll = new List<RegistryPackage>();
@@ -76,6 +78,43 @@ namespace Vsix.Viewer.ViewModels
             }
             else
             VisualStudioVersion = VisualStudioVersions.FirstOrDefault();
+        }
+        private void InitRegistryPackagesData()
+        {
+            // get registry data
+            VisualStudioVersions = new List<string>();
+            var sKeys = RegistryPackage.GetRegistryPackagesPath();
+
+            if (RegistryPackagesDataAll == null)
+                RegistryPackagesDataAll = new List<RegistryPackage>();
+
+            foreach (string sPackage in sKeys)
+            {
+                if (RegistryHelper.GetRegistryPath(sPackage) == null) continue;
+                // guids of packages
+                int k = 0;
+                foreach (var subKey in RegistryHelper.GetRegistryPath(sPackage).GetSubKeyNames())
+                {
+                    var rk = RegistryHelper.GetRegistryPath(sPackage + "\\" + subKey);
+                    var rkp = new RegistryPackage(rk);
+
+                    if (string.IsNullOrEmpty(rkp.ProductName) || string.IsNullOrEmpty(rkp.ProductVersion) ||
+                        string.IsNullOrEmpty(rkp.MinEdition)) continue;
+                    rkp.N = k++;
+
+                    if (!VisualStudioVersions.Contains(rkp.VisualStudioVersion)) VisualStudioVersions.Add(rkp.VisualStudioVersion);
+                    RegistryPackagesDataAll.Add(rkp);
+                }
+            }
+            string preferredVS = ConfigHelper.GetSetting("preferredVS");
+
+            if (!string.IsNullOrEmpty(preferredVS))
+            {
+                string preferredVSa = VisualStudioVersions.FirstOrDefault(o => o.StartsWith(preferredVS));
+                if (!string.IsNullOrEmpty(preferredVSa)) VisualStudioVersion = preferredVSa;
+            }
+            else
+                VisualStudioVersion = VisualStudioVersions.FirstOrDefault();
         }
 
         private void InitSampleRegistryPackagesData(int rows = 7)
@@ -128,8 +167,26 @@ namespace Vsix.Viewer.ViewModels
             }
         }
 
-        public List<RegistryPackage> RegistryPackagesDataAll { get; set; }
+        public BindingList<ManifestPackage> ManifestPackagesData
+        {
+            get { return _manifestPackagesData ; }
+            set
+            {
+                if (_manifestPackagesData == null)
+                    _manifestPackagesData = value;
+                else
+                {
+                    _manifestPackagesData.Clear();
+                    foreach (var v in value)
+                        _manifestPackagesData.Add(v);
+                }
+                OnPropertyChanged("ManifestPackagesData");
+            }
+        }
 
+        public List<RegistryPackage> RegistryPackagesDataAll { get; set; }
+        public List<ManifestPackage> ManifestPackagesDataAll { get; set; }
+        
         public string VisualStudioVersionLabel { get; set; }
 
         public string VisualStudioVersion
@@ -138,10 +195,11 @@ namespace Vsix.Viewer.ViewModels
             set
             {
                 _visualStudioVersion = value;
-                //OnPropertyChanged("VisualStudioVersion");
+                
                 // refill datagrid
-                RegistryPackagesData = new BindingList<RegistryPackage>(
-                    RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
+                RegistryPackagesData = new BindingList<RegistryPackage>(RegistryPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
+
+                ManifestPackagesData = new BindingList<RegistryPackage>(ManifestPackagesDataAll.Where(o => o.VisualStudioVersion.Equals(VisualStudioVersion)).ToList());
             }
         }
 

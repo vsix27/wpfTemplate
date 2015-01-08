@@ -99,7 +99,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </ApplicationDefinition>
+    <Compile Include="Helpers\IManifestPackage.cs" />
     <Compile Include="Helpers\IRegistryPackage.cs" />
+    <Compile Include="Helpers\ManifestPackage.cs" />
     <Compile Include="Helpers\RegistryPackage.cs" />
     <Compile Include="Helpers\ResourcesHelper.cs" />
     <Compile Include="Helpers\TreeViewHelper.cs" />

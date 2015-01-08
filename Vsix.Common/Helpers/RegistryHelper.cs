@@ -139,6 +139,10 @@ namespace Vsix.Common.Helpers
         }
 
         /// <summary>
+        /// initialized after calling GetVisualStudioExtensionPath
+        /// </summary>
+        public static List<string> VisualStudioVersions { get; private set; }
+        /// <summary>
         /// list 
         /// "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\Extensions"
         /// "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\IDE\\Extensions"
@@ -155,6 +159,7 @@ namespace Vsix.Common.Helpers
                     <Icon>Cloud_32x.png</Icon>
                     <Tags>Azure, Cloud, Resource Manager, Provision, Deploy</Tags>
              </Metadata>*/
+            VisualStudioVersions = new List<string>();
             var lst = new List<string>();
             var registry = Registry.ClassesRoot;
             var subKeyNames = registry.GetSubKeyNames();
@@ -164,6 +169,8 @@ namespace Vsix.Common.Helpers
                 var match = regex.Match(subKeyName);
                 if (match.Success)
                 {
+                    VisualStudioVersions.Add(
+                        match.Groups[0].Value.Substring(match.Groups[0].Value.IndexOf("sln.") + "sln.".Length));
                     // HKEY_CLASSES_ROOT\VisualStudio.sln.10.0\shell\Open\command
                     var vsCommand = "HKEY_CLASSES_ROOT\\" + match.Groups[0].Value + "\\shell\\open\\command";
 
