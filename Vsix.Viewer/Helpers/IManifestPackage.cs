@@ -18,7 +18,8 @@
         string IconPath { get; set; }
         string PreviewImagePath { get; set; }
         string Tags { get; set; }
-
+        string MoreInfoUrl { get; set; }
+        
         /// <summary> version of the xml schema for manifest </summary>
         string ManifestVersion { get; set; }
  

@@ -117,6 +117,9 @@ namespace Vsix.Common.Helpers
                     // 2. remove any XML Namespace (xmlns) declaration before loading the XML
                     string filter = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
                     string xmlNoNamspace = Regex.Replace(xml, filter, "");
+                    while (xmlNoNamspace.Contains("\t")) xmlNoNamspace = xmlNoNamspace.Replace("\t", " ");
+                    while (xmlNoNamspace.Contains("\n\r")) xmlNoNamspace = xmlNoNamspace.Replace("\n\r", " ");
+                    while (xmlNoNamspace.Contains(" d:")) xmlNoNamspace= xmlNoNamspace.Replace(" d:", " ");
                     doc.LoadXml(xmlNoNamspace);
                     return doc;
                 }
@@ -173,5 +176,11 @@ namespace Vsix.Common.Helpers
             catch (Exception ex) { LogHelper.LogError(ex); }
         }
 
+        public static string GetNodeValue(XmlNode nd, string xPath)
+        {
+            if (nd == null) return null;
+            var ndc = nd.SelectSingleNode(xPath);
+            return ndc == null ? null : ndc.InnerText;
+        }
     }
 }

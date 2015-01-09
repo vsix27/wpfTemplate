@@ -106,15 +106,18 @@
     <Compile Include="Helpers\ResourcesHelper.cs" />
     <Compile Include="Helpers\TreeViewHelper.cs" />
     <Compile Include="Presenters\ManifestPresenter.cs" />
-    <Compile Include="Presenters\RegistryPackagePresenter.cs" />
+    <Compile Include="Presenters\PackagePresenter.cs" />
     <Compile Include="Presenters\VsixDetailsPresenter.cs" />
     <Compile Include="ViewModels\IManifestModel.cs.cs" />
-    <Compile Include="ViewModels\IRegistryPackageModel.cs" />
+    <Compile Include="ViewModels\IPackageModel.cs" />
     <Compile Include="ViewModels\IVsixDetailsModel.cs" />
-    <Compile Include="ViewModels\RegistryPackageModel.cs" />
+    <Compile Include="ViewModels\PackageModel.cs" />
     <Compile Include="ViewModels\VsixDetailsModel.cs" />
     <Compile Include="Views\ManifestWindow.xaml.cs">
       <DependentUpon>ManifestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ucManifestPackages.xaml.cs">
+      <DependentUpon>ucManifestPackages.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ucRegistryPackages.xaml.cs">
       <DependentUpon>ucRegistryPackages.xaml</DependentUpon>
@@ -199,6 +202,10 @@
     <Page Include="Views\ManifestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ucManifestPackages.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ucRegistryPackages.xaml">
       <SubType>Designer</SubType>

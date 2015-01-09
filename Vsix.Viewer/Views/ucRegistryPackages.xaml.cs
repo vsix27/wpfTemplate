@@ -16,13 +16,13 @@ namespace Vsix.Viewer.Views
     /// </summary>
     public partial class UcRegistryPackages : UserControl
     {
-        private readonly RegistryPackageModel _viewModel;
+        private readonly PackageModel _viewModel;
 
         public UcRegistryPackages()
         {
             InitializeComponent();
 
-            _viewModel = new RegistryPackageModel();
+            _viewModel = new PackageModel();
             this.DataContext = _viewModel;
             
             DataGridRegistryPackages.ItemsSource = _viewModel.RegistryPackagesData;
